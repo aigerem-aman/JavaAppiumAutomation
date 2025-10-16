@@ -17,4 +17,11 @@ public class MainClassTest extends MainClass {
         Assert.assertTrue("The method returns less than " + expected,result > expected);
     }
 
+    @Test
+    public void testGetClassString() {
+        String result = getClassString().toLowerCase();
+
+        Assert.assertTrue("The string does not contain “hello” or “Hello”", result.contains("hello"));
+    }
+
 }
