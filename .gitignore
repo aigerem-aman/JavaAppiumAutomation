@@ -1,15 +1,18 @@
-### 🧠 Общие системные файлы ###
+### Общие системные файлы ###
 .DS_Store
 *.log
 *.tmp
 *.swp
 *~
 
-### 🧩 Java / Gradle ###
+### Java / Gradle ###
 # Общие выходные директории компиляции
 out/
 build/
 target/
+
+# Классы и временные файлы
+*.class
 
 # Gradle cache
 .gradle/
@@ -17,6 +20,10 @@ target/
 # IntelliJ IDEA
 .idea/
 *.iml
+
+# Исключаем служебные подпапки IDEA, если они вдруг создаются
+*/.idea/
+**/.idea/
 
 # Eclipse
 .apt_generated
@@ -37,18 +44,15 @@ bin/
 /nbdist/
 /.nb-gradle/
 
-### 🧰 IDE и редакторы ###
+### IDE и редакторы ###
 .vscode/
 
-### 💻 macOS ###
-.DS_Store
-
-### 🧪 Node.js / Appium ###
+### Node.js / Appium ###
 node_modules/
 npm-debug.log*
 package-lock.json.save
 
-### 🧪 Android (если появится AVD / SDK) ###
+### Android (если появится AVD / SDK) ###
 local.properties
 *.apk
 *.aab
