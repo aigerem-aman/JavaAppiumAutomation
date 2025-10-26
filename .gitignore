@@ -1,10 +1,24 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.kotlin
+### 🧠 Общие системные файлы ###
+.DS_Store
+*.log
+*.tmp
+*.swp
+*~
 
-### Eclipse ###
+### 🧩 Java / Gradle ###
+# Общие выходные директории компиляции
+out/
+build/
+target/
+
+# Gradle cache
+.gradle/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -16,15 +30,33 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+### 🧰 IDE и редакторы ###
 .vscode/
 
-### Mac OS ###
+### 💻 macOS ###
 .DS_Store
+
+### 🧪 Node.js / Appium ###
+node_modules/
+npm-debug.log*
+package-lock.json.save
+
+### 🧪 Android (если появится AVD / SDK) ###
+local.properties
+*.apk
+*.aab
+*.keystore
+
+### ⚙️ Прочее ###
+# Кэш тестов, временные файлы, окружение
+*.env
+*.tmp
+*.bak
+*.jar
