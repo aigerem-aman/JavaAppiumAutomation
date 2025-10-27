@@ -1,12 +1,13 @@
-### Общие системные файлы ###
+### 🧩 Общие системные файлы ###
 .DS_Store
 *.log
 *.tmp
 *.swp
 *~
+*.bak
 
-### Java / Gradle ###
-# Общие выходные директории компиляции
+### ☕️ Java / Gradle / Maven ###
+# Каталоги сборки
 out/
 build/
 target/
@@ -14,53 +15,76 @@ target/
 # Классы и временные файлы
 *.class
 
-# Gradle cache
+# Кеш Gradle
 .gradle/
 
-# IntelliJ IDEA
+# Maven
+.mvn/
+settings.xml
+
+# Файлы зависимостей
+dependency-reduced-pom.xml
+
+### 🧠 IntelliJ IDEA / JetBrains ###
 .idea/
 *.iml
+*.ipr
+*.iws
 
-# Исключаем служебные подпапки IDEA, если они вдруг создаются
-*/.idea/
-**/.idea/
+# Иногда IDEA создаёт внутренние папки в подпроектах
+/.idea/
+/*.iml
 
-# Eclipse
-.apt_generated
+# Автоматически сгенерированные каталоги
+/out/
+!/src/
+
+### 🧩 Eclipse / NetBeans (на всякий случай) ###
 .classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+.settings/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# NetBeans
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### IDE и редакторы ###
-.vscode/
-
-### Node.js / Appium ###
+### 🧪 Node.js / Appium ###
 node_modules/
 npm-debug.log*
 package-lock.json.save
+yarn-error.log
+.pnpm-debug.log
 
-### Android (если появится AVD / SDK) ###
-local.properties
+### 🤖 Android ###
 *.apk
+*.ap_        # собранные apk
 *.aab
+*.dex
 *.keystore
+local.properties
+captures/
+output.json
+
+# build от Android Studio
+app/build/
 
 ### ⚙️ Прочее ###
-# Кэш тестов, временные файлы, окружение
 *.env
-*.tmp
-*.bak
-*.jar
+*.jar%
+*.war
+*.ear
+*.pid
+*.seed
+*.orig
+*.rej
+
+### 🧰 Тесты и кэш ###
+test-output/
+reports/
+coverage/
+
+### 📦 Локальные артефакты ###
+# APKs — хранишь их только локально
+APKs/
+Libs/
