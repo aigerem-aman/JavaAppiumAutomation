@@ -142,6 +142,39 @@ public class FirstAndroidTests {
                 "Texts do not match");
     }
 
+    @Test
+    public void SearchResultsArePluralAndDisappearAfterCancel()
+    {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search bar",
+                Duration.ofSeconds(5));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementPresent(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id='org.wikipedia:id/search_results_list']/android.view.ViewGroup[2]"),
+                "There is one or less search results",
+                Duration.ofSeconds(15));
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X button to cancel search",
+                Duration.ofSeconds(5));
+
+        waitForElementNotPresent(
+                By.id("//androidx.recyclerview.widget.RecyclerView[@resource-id='org.wikipedia:id/search_results_list']/android.view.ViewGroup[2]"),
+                "Search results is still present",
+                Duration.ofSeconds(5));
+    }
+
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
