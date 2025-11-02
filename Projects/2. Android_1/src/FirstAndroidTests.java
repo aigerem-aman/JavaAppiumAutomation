@@ -3,6 +3,8 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -143,8 +145,7 @@ public class FirstAndroidTests {
     }
 
     @Test
-    public void SearchResultsArePluralAndDisappearAfterCancel()
-    {
+    public void SearchResultsArePluralAndDisappearAfterCancel() {
         clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
 
@@ -173,6 +174,39 @@ public class FirstAndroidTests {
                 By.id("//androidx.recyclerview.widget.RecyclerView[@resource-id='org.wikipedia:id/search_results_list']/android.view.ViewGroup[2]"),
                 "Search results is still present",
                 Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void SearchResultsShouldContainSearchQuery() {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search bar",
+                Duration.ofSeconds(5));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementPresent(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id='org.wikipedia:id/search_results_list']/android.view.ViewGroup[2]"),
+                "There is one or less search results",
+                Duration.ofSeconds(15));
+
+        List<WebElement> results = driver.findElements(By.xpath(
+                "//*[contains(@resource-id, 'org.wikipedia:id/page_list_item_title')]"));
+
+        for (WebElement element : results) {
+            String title = element.getAttribute("text");
+            Assert.assertTrue(
+                    "Текст '" + title + "' не содержит ожидаемое слово 'Java'",
+                    title.toLowerCase().contains("java")
+            );
+        }
     }
 
     public void clickIfPresent(By by, int timeoutInSeconds) {
@@ -215,12 +249,13 @@ public class FirstAndroidTests {
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
     }
-    private WebElement waitForElementAndClear(By by, String error_message, Duration timeoutInSeconds)
-    {
+
+    private WebElement waitForElementAndClear(By by, String error_message, Duration timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
         return element;
     }
+
     private WebElement assertElementHasText(By by, String expected_text, String error_message) {
         WebElement element = waitForElementPresent(by, "Cannot find element", Duration.ofSeconds(5));
         String actual_text = element.getAttribute("text");
