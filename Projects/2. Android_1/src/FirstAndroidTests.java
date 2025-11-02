@@ -126,6 +126,21 @@ public class FirstAndroidTests {
                 article_title);
     }
 
+    @Test
+    public void textInSearchBarShouldBeExpected() {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        assertElementHasText(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Search Wikipedia",
+                "Texts do not match");
+    }
 
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
@@ -171,6 +186,12 @@ public class FirstAndroidTests {
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
+        return element;
+    }
+    private WebElement assertElementHasText(By by, String expected_text, String error_message) {
+        WebElement element = waitForElementPresent(by, "Cannot find element", Duration.ofSeconds(5));
+        String actual_text = element.getAttribute("text");
+        Assert.assertEquals("Texts do not match", actual_text, expected_text);
         return element;
     }
 }
