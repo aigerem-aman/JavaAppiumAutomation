@@ -10,8 +10,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -111,11 +114,7 @@ public class FirstAndroidTests {
                 Duration.ofSeconds(15));
 
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
-
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/page_web_view"),
-                "text",
-                Duration.ofSeconds(5));
+        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
 
         WebElement title_element = waitForElementPresent(
                 By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
@@ -209,6 +208,38 @@ public class FirstAndroidTests {
         }
     }
 
+    @Test
+    public void ArticleCanBeSwipedUp() {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Appium",
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
+                "Cannot find 'Appium' in search results",
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
+
+        swipeUpToFindElement(
+                By.xpath("//*[@text='View article in browser']"),
+                "Cannot find the end of the article",
+                20
+        );
+
+    }
+
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
@@ -262,5 +293,47 @@ public class FirstAndroidTests {
         Assert.assertEquals("Texts do not match", actual_text, expected_text);
         return element;
     }
+
+    protected void swipeUp(int timeOfSwipe)
+    {
+        Dimension size = driver.manage().window().getSize();
+        int x = size.width / 2;
+        int start_y = (int)(size.height * 0.8);
+        int end_y = (int)(size.height * 0.2);
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1);
+
+        swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), x, start_y));
+        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swipe.addAction(new org.openqa.selenium.interactions.Pause(finger, Duration.ofMillis(200)));
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(), x, end_y));
+        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(List.of(swipe));
+    }
+
+    protected void swipeUpQuick()
+    {
+        swipeUp(200);
+    }
+
+    protected void swipeUpToFindElement(By by, String error_message, int max_swipes)
+    {
+        int already_swiped = 0;
+        while (driver.findElements(by).isEmpty()){
+            if (already_swiped >= max_swipes){
+                waitForElementNotPresent(
+                        by,
+                        "Cannot find element by swiping up. \n" + error_message,
+                        Duration.ofSeconds(0));
+                return;
+            }
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
+
+
 }
 
