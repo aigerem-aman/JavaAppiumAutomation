@@ -3,7 +3,10 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -418,6 +421,152 @@ public class FirstAndroidTests {
 //                title_after_rotation);
 //
 //    }
+
+    @Test
+    public void onlyDeletedArticleGetsDeleted()
+    {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        String[] words = {"Apple", "Banana", "Cherry", "Grape", "Tomato", "Melon"};
+        List<String> list = new ArrayList<>(Arrays.asList(words));
+        Random random = new Random();
+        String search_query1 = words[random.nextInt(words.length)];
+        list.remove(search_query1);
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_query1,
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[1]"),
+                "Cannot find search result",
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find Save button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Add to list')]"),
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+
+        String name_of_folder = "To eat";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_folder,
+                "Cannot find list name input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'OK')]"),
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate up button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClear(
+                By.xpath("//*[contains(@text, '" +  search_query1 + "')]"),
+                "Cannot find " + search_query1 + "in search input field",
+                Duration.ofSeconds(5));
+
+        String search_query2 = words[random.nextInt(words.length)];
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_query2,
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[1]"),
+                "Cannot find search result",
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find Save button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Add to list')]"),
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_title' and @text='" + name_of_folder + "']"),
+                "Cannot find created list",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate up button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate up button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("(//android.widget.LinearLayout[@resource-id=\"org.wikipedia:id/navigation_bar_item_content_container\"])[2]"),
+                "Cannot find Save button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, '" + name_of_folder + "')]"),
+                "Couldn't swipe list button",
+                Duration.ofSeconds(5));
+
+        clickIfPresent(By.xpath("//*[contains(@text, 'Got it')]"), 3);
+
+        swipeElementToLeft(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '" + search_query1 + "')]"),
+                "Cannot find the article to delete");
+
+        waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '" + search_query1 + "')]"),
+                "Cannot delete the saved article",
+                Duration.ofSeconds(5));
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '" + search_query2 + "')]"),
+                "Cannot find the article that was not deleted",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '" + search_query2 + "')]"),
+                "Cannot find the article that was not deleted",
+                Duration.ofSeconds(15));
+
+        WebElement title_element = waitForElementPresent(
+                By.xpath("//android.widget.TextView[@text='" + search_query2 + "']"),
+                "Cannot find article title",
+                Duration.ofSeconds(15));
+
+        String article_title = title_element.getAttribute("text");
+
+        Assert.assertEquals(
+                search_query2,
+                article_title);
+    }
 
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
