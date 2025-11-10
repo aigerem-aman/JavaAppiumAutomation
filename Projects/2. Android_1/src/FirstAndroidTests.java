@@ -9,10 +9,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -144,7 +141,7 @@ public class FirstAndroidTests {
     }
 
     @Test
-    public void SearchResultsArePluralAndDisappearAfterCancel() {
+    public void searchResultsArePluralAndDisappearAfterCancel() {
         clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
 
@@ -176,7 +173,7 @@ public class FirstAndroidTests {
     }
 
     @Test
-    public void SearchResultsShouldContainSearchQuery() {
+    public void searchResultsShouldContainSearchQuery() {
         clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
 
@@ -209,7 +206,7 @@ public class FirstAndroidTests {
     }
 
     @Test
-    public void ArticleCanBeSwipedUp() {
+    public void articleCanBeSwipedUp() {
         clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
 
@@ -230,15 +227,197 @@ public class FirstAndroidTests {
                 Duration.ofSeconds(15));
 
         clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
-        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
 
         swipeUpToFindElement(
                 By.xpath("//*[@text='View article in browser']"),
                 "Cannot find the end of the article",
                 20
         );
-
     }
+
+    @Test
+    public void saveArticleToMyListThenDeleteArticle() {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[2]//*[@text='Object-oriented programming language']"),
+                "Cannot find search result",
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find Save button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Add to list')]"),
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+
+        String name_of_folder = "Learning programming";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_folder,
+                "Cannot find list name input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'OK')]"),
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate up button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc=\"Navigate up\"]"),
+                "Cannot find Navigate up button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("(//android.widget.LinearLayout[@resource-id=\"org.wikipedia:id/navigation_bar_item_content_container\"])[2]"),
+                "Cannot find Save button",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, '" + name_of_folder + "')]"),
+                "Couldn't swipe list button",
+                Duration.ofSeconds(5));
+
+        clickIfPresent(By.xpath("//*[contains(@text, 'Got it')]"), 3);
+
+        swipeElementToLeft(
+                By.xpath("//*[contains (@text, 'Java (programming language)')]"),
+                "Cannot find the article to delete");
+
+        waitForElementNotPresent(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot delete the saved article",
+                Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void articlesAreFoundWhenQueryIsCorrect() {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        String search_query = "Linkin park Discography";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_query,
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@class='android.view.ViewGroup']";
+        waitForElementPresent(
+                By.xpath(search_result_locator),
+                "Cannot find search result by the request " + search_query,
+                Duration.ofSeconds(15));
+
+        int amount_of_articles_found = getNumberOfElements(By.xpath(search_result_locator));
+
+        Assert.assertTrue(amount_of_articles_found > 0);
+    }
+
+    @Test
+    public void noArticlesAreFoundWhenQueryIsNotCorrect()
+    {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        String search_query = "xsdfsfsdfsfsdf";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_query,
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@class='android.view.ViewGroup']";
+        String empty_result_label = "//*[@text='No results']";
+
+        waitForElementPresent(
+                By.xpath(empty_result_label),
+                "Cannot find empty result label by the request " + search_query,
+                Duration.ofSeconds(15));
+
+        assertElementNotPresent(
+                By.xpath(search_result_locator),
+                "we found some results by request " + search_query);
+    }
+
+//    @Test
+//    public void articleTitleShouldNotChangeWhenRotated()
+//    {
+//        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+//        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+//
+//        waitForElementAndClick(
+//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+//                "Cannot find search field",
+//                Duration.ofSeconds(5));
+//
+//        String search_query = "Java";
+//        waitForElementAndSendKeys(
+//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+//                search_query,
+//                "Cannot find search input field",
+//                Duration.ofSeconds(5));
+//
+//        waitForElementAndClick(
+//                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[2]//*[@text='Object-oriented programming language']"),
+//                "Cannot find search result by the request " + search_query,
+//                Duration.ofSeconds(15));
+//
+//        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+//        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
+//
+//        String title_before_rotation = waitForElementAndGetAttribute(
+//                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+//                "text",
+//                "Cannot find article title",
+//                Duration.ofSeconds(15));
+//
+//        rotateDevice(true);
+//
+//        String title_after_rotation = waitForElementAndGetAttribute(
+//                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+//                "text",
+//                "Cannot find article title",
+//                Duration.ofSeconds(15));
+//
+//        Assert.assertEquals(
+//                "The title of the article is not the same after rotation",
+//                title_before_rotation,
+//                title_after_rotation);
+//
+//    }
 
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
@@ -249,6 +428,7 @@ public class FirstAndroidTests {
             System.out.println("Could not find element by locator: " + by);
         }
     }
+
 
     private WebElement waitForElementPresent(By by, String error_message, Duration timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -332,6 +512,54 @@ public class FirstAndroidTests {
             swipeUpQuick();
             ++already_swiped;
         }
+    }
+
+    protected void swipeElementToLeft(By by, String error_message)
+    {
+        WebElement element = waitForElementPresent(
+                by,
+                error_message,
+                Duration.ofSeconds(5));
+
+        int left_x = element.getLocation().getX();
+        int right_x = left_x + element.getSize().getWidth();
+        int upper_y = element.getLocation().getY();
+        int lower_y = upper_y + element.getSize().getHeight();
+        int middle_y = (upper_y + lower_y) / 2;
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence swipe = new Sequence(finger, 1);
+
+        swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), right_x, middle_y));
+        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swipe.addAction(new org.openqa.selenium.interactions.Pause(finger, Duration.ofMillis(200)));
+        swipe.addAction(finger.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(), left_x, middle_y));
+        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(List.of(swipe));
+
+    }
+
+    private int getNumberOfElements(By by)
+    {
+        List elements;
+        elements = driver.findElements(by);
+        return elements.size();
+    }
+
+    private void assertElementNotPresent(By by, String error_message)
+    {
+        int amount_of_elements = getNumberOfElements(by);
+        if (amount_of_elements > 0){
+            String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(default_message + ' ' + error_message);
+        }
+    }
+
+    private String waitForElementAndGetAttribute(By by, String attribute, String error_message, Duration timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        return element.getAttribute(attribute);
     }
 
 
