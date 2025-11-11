@@ -568,6 +568,36 @@ public class FirstAndroidTests {
                 article_title);
     }
 
+    @Test
+    public void articleShouldHaveTitle()
+    {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[2]//*[@text='Object-oriented programming language']"),
+                "Cannot find search result",
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
+
+        assertElementPresent(
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+                "Cannot find article title");
+    }
+
     public void clickIfPresent(By by, int timeoutInSeconds) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
@@ -711,6 +741,13 @@ public class FirstAndroidTests {
         return element.getAttribute(attribute);
     }
 
-
+    private void assertElementPresent(By by, String error_message)
+    {
+        int amount_of_elements = getNumberOfElements(by);
+        if (amount_of_elements < 1) {
+            String default_message = "An element '" + by.toString() + "' supposed to be present";
+            throw new AssertionError(default_message + ' ' + error_message);
+        }
+    }
 }
 
