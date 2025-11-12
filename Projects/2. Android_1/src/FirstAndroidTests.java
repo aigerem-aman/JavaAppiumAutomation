@@ -375,52 +375,52 @@ public class FirstAndroidTests {
                 "we found some results by request " + search_query);
     }
 
-//    @Test
-//    public void articleTitleShouldNotChangeWhenRotated()
-//    {
-//        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
-//        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
-//
-//        waitForElementAndClick(
-//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-//                "Cannot find search field",
-//                Duration.ofSeconds(5));
-//
-//        String search_query = "Java";
-//        waitForElementAndSendKeys(
-//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-//                search_query,
-//                "Cannot find search input field",
-//                Duration.ofSeconds(5));
-//
-//        waitForElementAndClick(
-//                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[2]//*[@text='Object-oriented programming language']"),
-//                "Cannot find search result by the request " + search_query,
-//                Duration.ofSeconds(15));
-//
-//        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
-//        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
-//
-//        String title_before_rotation = waitForElementAndGetAttribute(
-//                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
-//                "text",
-//                "Cannot find article title",
-//                Duration.ofSeconds(15));
-//
-//        rotateDevice(true);
-//
-//        String title_after_rotation = waitForElementAndGetAttribute(
-//                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
-//                "text",
-//                "Cannot find article title",
-//                Duration.ofSeconds(15));
-//
-//        Assert.assertEquals(
-//                "The title of the article is not the same after rotation",
-//                title_before_rotation,
-//                title_after_rotation);
-//
-//    }
+    @Test
+    public void articleTitleShouldNotChangeWhenRotated()
+    {
+        clickIfPresent(By.xpath("//*[contains(@text, 'Skip')]"), 3);
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search field",
+                Duration.ofSeconds(5));
+
+        String search_query = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                search_query,
+                "Cannot find search input field",
+                Duration.ofSeconds(5));
+
+        waitForElementAndClick(
+                By.xpath("//androidx.recyclerview.widget.RecyclerView[@resource-id=\"org.wikipedia:id/search_results_list\"]/android.view.ViewGroup[2]//*[@text='Object-oriented programming language']"),
+                "Cannot find search result by the request " + search_query,
+                Duration.ofSeconds(15));
+
+        clickIfPresent(By.xpath("//android.widget.ImageView[@content-desc=\"Close\"]"), 3);
+        clickIfPresent(By.id("org.wikipedia:id/page_web_view"),5);
+
+        String title_before_rotation = waitForElementAndGetAttribute(
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+                "text",
+                "Cannot find article title",
+                Duration.ofSeconds(15));
+
+        ((AndroidDriver) driver).rotate(ScreenOrientation.LANDSCAPE);
+
+        String title_after_rotation = waitForElementAndGetAttribute(
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+                "text",
+                "Cannot find article title",
+                Duration.ofSeconds(15));
+
+        Assert.assertEquals(
+                "The title of the article is not the same after rotation",
+                title_before_rotation,
+                title_after_rotation);
+
+    }
 
     @Test
     public void onlyDeletedArticleGetsDeleted()
