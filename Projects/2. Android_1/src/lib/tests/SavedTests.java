@@ -44,10 +44,10 @@ public class SavedTests extends CoreTestCase {
         searchPageObject.initSearchInput();
 
         String[] words = {"Apple", "Banana", "Cherry", "Grape", "Tomato", "Melon"};
-        List<String> list = new ArrayList<>(Arrays.asList(words));
+        List<String> list_of_queries = new ArrayList<>(Arrays.asList(words));
         Random random = new Random();
-        String search_query1 = words[random.nextInt(words.length)];
-        list.remove(search_query1);
+        String search_query1 = list_of_queries.remove(random.nextInt(list_of_queries.size()));
+        String search_query2 = list_of_queries.remove(random.nextInt(list_of_queries.size()));
 
         searchPageObject.typeInSearchLine(search_query1);
         searchPageObject.clickOnFirstArticle();
@@ -57,7 +57,6 @@ public class SavedTests extends CoreTestCase {
         navigationUI.pressNavigateUp();
         searchPageObject.clearSearchInput(search_query1);
 
-        String search_query2 = words[random.nextInt(words.length)];
         searchPageObject.typeInSearchLine(search_query2);
         searchPageObject.clickOnFirstArticle();
         articlePageObject.addArticleToExistingList(name_of_folder);
