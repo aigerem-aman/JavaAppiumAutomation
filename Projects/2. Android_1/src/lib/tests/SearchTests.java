@@ -1,10 +1,11 @@
 package lib.tests;
 
 import lib.CoreTestCase;
+import lib.ui.Factories.NavigationUIFactory;
+import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -12,22 +13,20 @@ import java.util.List;
 public class SearchTests extends CoreTestCase {
     @Test
     public void testSearchResultShouldContainExpected() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         searchPageObject.waitForSearchResult("Object-oriented programming language");
     }
     @Test
     public void testCancelSearchButtonShouldCancelSearch() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         searchPageObject.waitForCancelButtonToAppear();
@@ -36,21 +35,19 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testTextInSearchBarShouldBeExpected() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         searchPageObject.assertTextInSearchElement("Search Wikipedia");
     }
     @Test
     public void testSearchResultsArePluralAndDisappearAfterCancel() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         int number_of_found_articles = searchPageObject.getAmountOfFoundArticles();
@@ -61,11 +58,10 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testSearchResultsShouldContainSearchQuery() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
 
@@ -81,11 +77,10 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testArticlesAreFoundWhenQueryIsCorrect() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.pressSkipButtonIfPresent();
-        navigationUI.pressCloseButtonIfPresent();
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         String search_query = "Linkin park Discography";
         searchPageObject.typeInSearchLine(search_query);
@@ -96,9 +91,10 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testNoResultsWhenQueryIsNotCorrect() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
         String search_query = "xsdfsfsdfsfsdf";
         searchPageObject.typeInSearchLine(search_query);
