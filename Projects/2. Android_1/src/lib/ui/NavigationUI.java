@@ -1,17 +1,17 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import java.time.Duration;
 
-public class NavigationUI extends MainPageObject {
+abstract public class NavigationUI extends MainPageObject {
 
-    private static final String
-            NAVIGATE_UP_BUTTON = "xpath~//android.widget.ImageButton[@content-desc=\"Navigate up\"]",
-            MY_LIST_BUTTON = "xpath~(//android.widget.LinearLayout[@resource-id=\"org.wikipedia:id/navigation_bar_item_content_container\"])[2]",
-            SKIP_BUTTON = "xpath~//*[contains(@text, 'Skip')]",
-            CLOSE_BUTTON = "xpath~//android.widget.ImageView[@content-desc=\"Close\"]",
-            GOT_IT_BUTTON = "xpath~//*[contains(@text, 'Got it')]";
+    protected static String
+            NAVIGATE_UP_BUTTON,
+            MY_LIST_BUTTON,
+            CLOSE_BUTTON,
+            GOT_IT_BUTTON,
+            DONE_BUTTON,
+            SKIP_BUTTON;
 
     public NavigationUI(AppiumDriver driver) {
         super(driver);
@@ -24,6 +24,13 @@ public class NavigationUI extends MainPageObject {
                 Duration.ofSeconds(5));
     }
 
+    public void pressClose(){
+        this.waitForElementAndClick(
+                CLOSE_BUTTON,
+                "Cannot find Close button",
+                Duration.ofSeconds(5));
+}
+
     public void clickMyListButton() {
         this.waitForElementAndClick(
                 MY_LIST_BUTTON,
@@ -31,19 +38,11 @@ public class NavigationUI extends MainPageObject {
                 Duration.ofSeconds(5));
     }
 
-    public void pressSkipButtonIfPresent()
-    {
-        this.clickIfPresent(SKIP_BUTTON, 2);
-    }
-
-    public void pressCloseButtonIfPresent()
-    {
-        this.clickIfPresent(CLOSE_BUTTON, 2);
-    }
-
-    public void pressGotItButtonIfPresent()
-    {
-        this.clickIfPresent(GOT_IT_BUTTON, 2);
+    public void closeAllPopups() {
+        this.clickWhilePresent(SKIP_BUTTON, 5);
+        this.clickWhilePresent(DONE_BUTTON, 5);
+        this.clickWhilePresent(CLOSE_BUTTON, 5);
+        this.clickWhilePresent(GOT_IT_BUTTON, 5);
     }
 }
 

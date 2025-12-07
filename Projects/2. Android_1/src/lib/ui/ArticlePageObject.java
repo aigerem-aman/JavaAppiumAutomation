@@ -1,20 +1,22 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-            TITLE_BY_SUBSTRING_TPL = "xpath~//android.widget.TextView[@text='{SUBSTRING}']",
-            FOOTER = "xpath~//*[@text='View article in browser']",
-            SAVE_BUTTON = "id~org.wikipedia:id/page_save",
-            ADD_TO_MY_LIST_BUTTON = "xpath~//*[contains(@text, 'Add to list')]",
-            MY_LIST_NAME_INPUT = "id~org.wikipedia:id/text_input",
-            EXISTING_LIST = "xpath~//*[@resource-id='org.wikipedia:id/item_title' and @text='{SUBSTRING}']",
-            CONFIRM_ADDING_LIST = "xpath~//*[contains(@text,'OK')]";
+    protected static String
+            TITLE_BY_SUBSTRING_TPL,
+            FOOTER,
+            SAVE_BUTTON,
+            ADD_TO_MY_LIST_BUTTON,
+            CREATE_NEW_LIST_BUTTON,
+            MY_LIST_NAME_INPUT,
+            EXISTING_LIST,
+            CONFIRM_ADDING_LIST;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -22,6 +24,10 @@ public class ArticlePageObject extends MainPageObject {
 
     private static String getArticleTitleElement(String substring) {
         return TITLE_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getAddToListText(String substring) {
+        return ADD_TO_MY_LIST_BUTTON.replace("{SUBSTRING}", substring);
     }
 
     private static String getListTitleElement(String substring) {
@@ -38,17 +44,28 @@ public class ArticlePageObject extends MainPageObject {
 
     public String getArticleTitle(String subString) {
         WebElement title_element = waitForTitleElement(subString);
-        return title_element.getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
     }
 
     public void swipeToFooter() {
-        this.swipeUpToFindElement(
-                FOOTER,
-                "Cannot find the end of the article",
-                20);
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER,
+                    "Cannot find the end of the article",
+                    200);
+        } else {
+            this.swipeUpTillElementAppear(
+                    FOOTER,
+                    "Cannot find the end of the article",
+                    200);
+        }
     }
 
-    public void addArticleToMyNewList(String name_of_folder) {
+    public void addArticleToNewListOnAndroid(String name_of_folder) {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
                 "Cannot find Save button",
@@ -71,7 +88,7 @@ public class ArticlePageObject extends MainPageObject {
                 Duration.ofSeconds(5));
     }
 
-    public void addArticleToExistingList(String name_of_folder) {
+    public void addArticleToExistingListOnAndroid(String name_of_folder) {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
                 "Cannot find Save button",
@@ -90,4 +107,31 @@ public class ArticlePageObject extends MainPageObject {
                 Duration.ofSeconds(15));
     }
 
+    public void addArticleToNewListOniOS(String article_title, String name_of_folder) {
+        this.waitForElementAndClick(SAVE_BUTTON,
+                "Cannot find option to add article to reading list",
+                Duration.ofSeconds(5));
+
+        String add_to_list_text = getAddToListText(article_title);
+        this.waitForElementAndClick(
+                add_to_list_text,
+                "Cannot find option to add article to reading list",
+                Duration.ofSeconds(5));
+
+        this.waitForElementAndClick(
+                CREATE_NEW_LIST_BUTTON,
+                "Cannot find 'Create new list' button",
+                Duration.ofSeconds(5));
+
+        this.waitForElementAndSendKeys(
+                MY_LIST_NAME_INPUT,
+                name_of_folder,
+                "Cannot find list name input field",
+                Duration.ofSeconds(5));
+
+        this.waitForElementAndClick(
+                CONFIRM_ADDING_LIST,
+                "Cannot find Add to list button",
+                Duration.ofSeconds(5));
+    }
 }

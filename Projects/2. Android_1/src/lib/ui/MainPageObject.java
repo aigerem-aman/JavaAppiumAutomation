@@ -1,11 +1,8 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import lib.Platform;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,14 +20,29 @@ public class MainPageObject {
         this.driver = driver;
     }
 
-    public void clickIfPresent(String locator, int timeoutInSeconds) {
+    public void clickWhilePresent(String locator, int timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
-            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
-            element.click();
-        } catch (TimeoutException e) {
-            System.out.println("Could not find element by locator: " + by);
+
+        Duration shortWait = Duration.ofMillis(300);
+
+        while (true) {
+            try {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+                WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+
+                element.click();
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException ignored) {}
+
+                if (driver.findElements(by).isEmpty()) {
+                    break;
+                }
+
+            } catch (TimeoutException e) {
+                break;
+            }
         }
     }
 
@@ -74,14 +86,29 @@ public class MainPageObject {
         return element;
     }
 
-    public WebElement assertElementHasText(String locator, String expected_text, String error_message) {
+    public  WebElement assertElementHasText(String locator, String expected_text, String error_message) {
         WebElement element = waitForElementPresent(locator, "Cannot find element", Duration.ofSeconds(5));
-        String actual_text = element.getAttribute("text");
-        Assert.assertEquals("Texts do not match", actual_text, expected_text);
+
+        String actualText;
+        if (Platform.getInstance().isAndroid()) {
+            actualText = element.getText();
+        } else {
+            actualText = element.getAttribute("label");
+            if (actualText == null || actualText.isEmpty()) {
+                actualText = element.getAttribute("value");
+            }
+            if (actualText == null || actualText.isEmpty()) {
+                actualText = element.getAttribute("name");      // иногда name
+            }
+        }
+
+        if (!expected_text.equals(actualText)) {
+            throw new AssertionError(error_message + ". Actual: " + actualText);
+        }
         return element;
     }
 
-    public void swipeUp(int timeOfSwipe)
+    public void swipeUp()
     {
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
@@ -100,9 +127,10 @@ public class MainPageObject {
         driver.perform(List.of(swipe));
     }
 
+
     public void swipeUpQuick()
     {
-        swipeUp(200);
+        swipeUp();
     }
 
     public void swipeUpToFindElement(String locator, String error_message, int max_swipes)
@@ -121,6 +149,32 @@ public class MainPageObject {
             ++already_swiped;
         }
     }
+    public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes)
+    {
+        By by = this.getLocatorByString(locator);
+        int already_swiped = 0;
+
+        while (!isElementVisibleOnScreen(by)) {
+            if (already_swiped >= max_swipes) {
+                throw new AssertionError(error_message);
+            }
+            swipeUp();
+            already_swiped++;
+        }
+    }
+
+    private boolean isElementVisibleOnScreen(By by) {
+        List<WebElement> elements = driver.findElements(by);
+        if (elements.isEmpty()) return false;
+
+        WebElement el = elements.get(0);
+        Rectangle rect = el.getRect();
+
+        int screenHeight = driver.manage().window().getSize().height;
+
+        return rect.y >= 0 && (rect.y + rect.height) <= screenHeight;
+    }
+
 
     public void swipeElementToLeft(String locator, String error_message)
     {
@@ -191,5 +245,13 @@ public class MainPageObject {
         } else {
             throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locator_with_type);
         }
+    }
+    public boolean isElementLocatedOnTheScreen(String locator) {
+        int element_location_by_y = this.waitForElementPresent(
+                locator,
+                "Cannot find element by locator," + locator,
+                Duration.ofSeconds(15)).getLocation().getY();
+        int screen_size_by_y = driver.manage().window().getSize().getHeight();
+        return element_location_by_y < screen_size_by_y;
     }
 }

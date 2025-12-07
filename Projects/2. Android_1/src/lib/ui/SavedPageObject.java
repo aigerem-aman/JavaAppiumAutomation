@@ -1,13 +1,17 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
+import lib.Platform;
+
 import java.time.Duration;
 
-public class SavedPageObject extends MainPageObject {
-    private static final String
-            FOLDER_BY_NAME_TPL = "xpath~//*[contains(@text, '{name_of_folder}')]",
-            ARTICLE_BY_TITLE_TPL = "xpath~//*[@resource-id='org.wikipedia:id/page_list_item_container']/*[contains(@text, '{title}')]";
+abstract public class SavedPageObject extends MainPageObject {
+
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            READING_LISTS_SWITCHER,
+            DELETE_ARTICLE_BUTTON;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -56,7 +60,20 @@ public class SavedPageObject extends MainPageObject {
         this.swipeElementToLeft(
                 article_xpath,
                 "Cannot find the article to delete");
+        if (Platform.getInstance().isIOS()) {
+            this.waitForElementAndClick(
+                    DELETE_ARTICLE_BUTTON,
+                    "Cannot find article to delete",
+                    Duration.ofSeconds(5));
+        }
         this.waitForArticleToDisappearByTitle(title);
+    }
+
+    public void switchToReadingLists() {
+        this.waitForElementAndClick(
+                READING_LISTS_SWITCHER,
+                "Cannot find reading lists switcher",
+                Duration.ofSeconds(5));
     }
 }
 

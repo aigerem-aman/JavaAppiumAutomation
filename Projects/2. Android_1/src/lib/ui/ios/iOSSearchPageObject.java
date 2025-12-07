@@ -1,0 +1,22 @@
+package lib.ui.ios;
+
+import io.appium.java_client.AppiumDriver;
+import lib.ui.SearchPageObject;
+
+public class iOSSearchPageObject extends SearchPageObject {
+    static {
+        SEARCH_INIT_ELEMENT = "xpath~//XCUIElementTypeSearchField[@name='Search Wikipedia']";
+        SEARCH_INPUT = "xpath~//XCUIElementTypeSearchField[@value='Search Wikipedia']";
+        SEARCH_CANCEL_BUTTON = "id~Close";
+        SEARCH_RESULT_BY_SUBSTRING_TPL = "id~{SUBSTRING}";
+        SEARCH_RESULT_ELEMENT = "xpath~//XCUIElementTypeCell";
+        FIRST_SEARCH_RESULT = "xpath~//XCUIElementTypeCell[1]]";
+        RESULT_TITLE_CONTAINER = "id~org.wikipedia:id/page_list_item_title";
+        EMPTY_RESULTS_CONTAINER = "id~No results found";
+        EMPTY_RESULTS_TEXT = "No results found";
+    }
+
+    public iOSSearchPageObject(AppiumDriver driver) {
+        super(driver);
+    }
+}

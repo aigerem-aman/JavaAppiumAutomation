@@ -2,19 +2,20 @@ package lib.ui;
 
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 import java.time.Duration;
 
-public class WelcomePageObject extends MainPageObject
+abstract public class WelcomePageObject extends MainPageObject
 {
-    private static final String
-    STEP_LEARN_MORE_LINK = "xpath~//XCUIElementTypeStaticText[@name=\"Learn more about Wikipedia\"]",
-    STEP_NEW_WAYS_TO_EXPLORE_TEXT = "id~New ways to explore",
-    STEP_ADD_OR_EDIT_PREFERRED_LANGUAGE_TEXT = "xpath~//XCUIElementTypeStaticText[@name=\"Add or edit preferred languages\"]",
-    STEP_LEARN_MORE_ABOUT_OUR_PRIVACY_LINK = "xpath~//XCUIElementTypeStaticText[@name=\"Learn more about our privacy policy and terms of use\"]",
-    NEXT_LINK = "xpath~//XCUIElementTypeStaticText[@name=\"Next\"]",
-    GET_STARTED_BUTTON = "xpath~//XCUIElementTypeButton[@name=\"Get started\"]";
+    protected static  String
+    STEP_LEARN_MORE_LINK,
+    STEP_NEW_WAYS_TO_EXPLORE_TEXT,
+    STEP_ADD_OR_EDIT_PREFERRED_LANGUAGE_TEXT ,
+    STEP_LEARN_MORE_ABOUT_OUR_PRIVACY_LINK,
+    PRIMARY_TEXT_LOCATOR,
+    NEXT_LINK,
+    GET_STARTED_BUTTON,
+    SKIP_BUTTON;
 
     public WelcomePageObject(AppiumDriver driver)
     {
@@ -63,5 +64,30 @@ public class WelcomePageObject extends MainPageObject
                 "Cannot find 'Get started' button'",
                 Duration.ofSeconds(10));
     }
+
+    public void clickSkipButton()
+    {
+        this.waitForElementAndClick(
+                SKIP_BUTTON,
+                "Cannot find 'Skip' button",
+                Duration.ofSeconds(5));
+    }
+
+    public void waitForPrimaryText(String expected_text) {
+        String actual_text = waitForElementAndGetAttribute(
+                PRIMARY_TEXT_LOCATOR,
+                "text",
+                "Cannot find primary text locator",
+                Duration.ofSeconds(10));
+        assertElementHasText(
+                PRIMARY_TEXT_LOCATOR,
+                expected_text,
+                "Text: " + actual_text + " did not match expected text: " + expected_text);
+    }
+
+    public void swipeOnboardingLeft() {
+        this.swipeElementToLeft(PRIMARY_TEXT_LOCATOR, "Cannot swipe left");
+    }
+
 
 }

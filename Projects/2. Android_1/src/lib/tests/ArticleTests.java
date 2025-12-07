@@ -1,7 +1,11 @@
 package lib.tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
+import lib.ui.Factories.ArticlePageObjectFactory;
+import lib.ui.Factories.NavigationUIFactory;
+import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
@@ -9,43 +13,45 @@ import org.junit.Test;
 public class ArticleTests extends CoreTestCase {
     @Test
     public void testArticleTitleShouldContainExpected() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
-        searchPageObject.typeInSearchLine("Java");
-        searchPageObject.clickOnArticleBySubstring("Object-oriented programming language");
-        String article_title = articlePageObject.getArticleTitle("Java (programming language)");
+        searchPageObject.typeInSearchLine("Iberian horse");
+        searchPageObject.clickOnArticleBySubstring("Horses breeds native to Spain and Portugal");
+        String article_title = articlePageObject.getArticleTitle("Iberian horse");
         assertEquals(
-                "Java (programming language)",
+                "Iberian horse",
                 article_title);
     }
 
     @Test
     public void testArticleCanBeSwipedUp() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
-        searchPageObject.typeInSearchLine("Appium");
-        searchPageObject.clickOnArticleBySubstring("Appium");
-        articlePageObject.waitForTitleElement("Appium");
-        navigationUI.pressCloseButtonIfPresent();
+        searchPageObject.typeInSearchLine("Iberian horse");
+        searchPageObject.clickOnArticleBySubstring("Horses breeds native to Spain and Portugal");
+        articlePageObject.waitForTitleElement("Iberian horse");
         articlePageObject.swipeToFooter();
     }
 
     @Test
     public void testArticleShouldHaveTitle() {
-        NavigationUI navigationUI = new NavigationUI(driver);
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
+        navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
-        searchPageObject.typeInSearchLine("Java");
-        searchPageObject.clickOnArticleBySubstring("Object-oriented programming language");
-        articlePageObject.waitForTitleElement("Java (programming language)");
+        searchPageObject.typeInSearchLine("Iberian horse");
+        searchPageObject.clickOnArticleBySubstring("Horses breeds native to Spain and Portugal");
+        articlePageObject.waitForTitleElement("Iberian horse");
     }
 
 }
