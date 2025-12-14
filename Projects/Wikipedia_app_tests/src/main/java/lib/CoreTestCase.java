@@ -3,31 +3,27 @@ package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import junit.framework.TestCase;
-import lib.ui.Factories.NavigationUIFactory;
-import lib.ui.Factories.WelcomePageObjectFactory;
-import lib.ui.NavigationUI;
-import lib.ui.WelcomePageObject;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
 
-import java.util.Map;
+import java.time.Duration;
 
-public class CoreTestCase extends TestCase {
+public class CoreTestCase {
 
     protected AppiumDriver driver;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
-        super.setUp();
+
         driver = Platform.getInstance().getDriver();
         this.rotateScreenPortrait();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         driver.quit();
-        super.tearDown();
     }
 
     protected void rotateScreenPortrait() {
@@ -47,7 +43,7 @@ public class CoreTestCase extends TestCase {
     }
 
     protected void backgroudApp(int seconds) {
-        driver.executeScript("mobile: backgroundApp", Map.of("seconds", seconds));
+        driver.runAppInBackground(Duration.ofSeconds(seconds));
         rotateScreenPortrait();
     }
 
