@@ -6,7 +6,7 @@ import io.appium.java_client.ios.IOSDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
-
+ 
 import java.time.Duration;
 
 public class CoreTestCase {
