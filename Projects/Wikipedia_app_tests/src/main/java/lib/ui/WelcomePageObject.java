@@ -28,28 +28,28 @@ abstract public class WelcomePageObject extends MainPageObject
         this.waitForElementPresent(
                 STEP_LEARN_MORE_LINK ,
                 "Cannot find 'Learn more about Wikipedia'",
-                Duration.ofSeconds(10));
+                10);
     }
     public void waitForNewWaysToExploreText()
     {
         this.waitForElementPresent(
                 STEP_NEW_WAYS_TO_EXPLORE_TEXT ,
                 "Cannot find 'New ways to explore'",
-                Duration.ofSeconds(10));
+                10);
     }
     public void waitForAddOrEditPreferredLanguagesText()
     {
         this.waitForElementPresent(
                 STEP_ADD_OR_EDIT_PREFERRED_LANGUAGE_TEXT,
                 "Cannot find 'Add or edit preferred languages'",
-                Duration.ofSeconds(10));
+                10);
     }
     public void waitForLearnMoreAboutOurPrivacyPolicyLink()
     {
         this.waitForElementPresent(
                 STEP_LEARN_MORE_ABOUT_OUR_PRIVACY_LINK,
                 "Cannot find 'Learn more about our privacy policy and terms of use'",
-                Duration.ofSeconds(15));
+                15);
     }
 
     public void ClickNextButton()
@@ -57,14 +57,14 @@ abstract public class WelcomePageObject extends MainPageObject
         this.waitForElementAndClick(
                 NEXT_LINK ,
                 "Cannot find 'Next' button'",
-                Duration.ofSeconds(10));
+                10);
     }
     public void ClickGetStartedButton()
     {
         this.waitForElementAndClick(
                 GET_STARTED_BUTTON,
                 "Cannot find 'Get started' button'",
-                Duration.ofSeconds(10));
+                10);
     }
 
     public void clickSkipButton()
@@ -72,7 +72,7 @@ abstract public class WelcomePageObject extends MainPageObject
         this.waitForElementAndClick(
                 SKIP_BUTTON,
                 "Cannot find 'Skip' button",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void waitForPrimaryText(String expected_text) {
@@ -80,7 +80,7 @@ abstract public class WelcomePageObject extends MainPageObject
                 PRIMARY_TEXT_LOCATOR,
                 "text",
                 "Cannot find primary text locator",
-                Duration.ofSeconds(10));
+                10);
         assertElementHasText(
                 PRIMARY_TEXT_LOCATOR,
                 expected_text,

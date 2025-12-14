@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class SavedTests extends CoreTestCase {
 

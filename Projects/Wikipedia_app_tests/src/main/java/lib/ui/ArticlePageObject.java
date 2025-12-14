@@ -39,7 +39,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         return this.waitForElementPresent(
                 article_title_xpath,
                 "Cannot find article title",
-                Duration.ofSeconds(15));
+                15);
     }
 
     public String getArticleTitle(String subString) {
@@ -69,88 +69,88 @@ abstract public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
                 "Cannot find Save button",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 ADD_TO_MY_LIST_BUTTON,
                 "Cannot find Add to list button",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndSendKeys(
                 MY_LIST_NAME_INPUT,
                 name_of_folder,
                 "Cannot find list name input field",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 CONFIRM_ADDING_LIST,
                 "Cannot find Add to list button",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void addArticleToExistingListOnAndroid(String name_of_folder) {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
                 "Cannot find Save button",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 ADD_TO_MY_LIST_BUTTON,
                 "Cannot find Add to list button",
-                Duration.ofSeconds(5));
+                5);
 
         String list_by_name = getListTitleElement(name_of_folder);
 
         this.waitForElementAndClick(
                 list_by_name,
                 "Cannot find list by name " + name_of_folder,
-                Duration.ofSeconds(15));
+                15);
     }
 
     public void addArticleToNewListOniOS(String article_title, String name_of_folder) {
         this.waitForElementAndClick(SAVE_BUTTON,
                 "Cannot find option to add article to reading list",
-                Duration.ofSeconds(5));
+                5);
 
         String add_to_list_text = getAddToListText(article_title);
         this.waitForElementAndClick(
                 add_to_list_text,
                 "Cannot find option to add article to reading list",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 CREATE_NEW_LIST_BUTTON,
                 "Cannot find 'Create new list' button",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndSendKeys(
                 MY_LIST_NAME_INPUT,
                 name_of_folder,
                 "Cannot find list name input field",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 CONFIRM_ADDING_LIST,
                 "Cannot find Add to list button",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void addArticleToExistingListOniOS(String article_title, String name_of_folder) {
         this.waitForElementAndClick(SAVE_BUTTON,
                 "Cannot find option to add article to reading list",
-                Duration.ofSeconds(5));
+                5);
 
         String add_to_list_text = getAddToListText(article_title);
         this.waitForElementAndClick(
                 add_to_list_text,
                 "Cannot find confirmation to add article to reading list",
-                Duration.ofSeconds(5));
+                5);
 
         String list_by_name = getListTitleElement(name_of_folder);
 
         this.waitForElementAndClick(
                 list_by_name,
                 "Cannot find list by name " + name_of_folder,
-                Duration.ofSeconds(15));
+                15);
     }
 }

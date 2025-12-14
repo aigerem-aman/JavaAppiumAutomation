@@ -39,19 +39,19 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementPresent(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search bar",
-                Duration.ofSeconds(10));
+                10);
     }
 
     public void initSearchInput() {
         this.waitForElementPresent(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search bar",
-                Duration.ofSeconds(5));
+                5);
 
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search input field",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void assertTextInSearchElement(String expected_text)
@@ -67,7 +67,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementPresent(
                 SEARCH_CANCEL_BUTTON,
                 "Cannot find X button to cancel search",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void waitForCancelButtonToDisappear()
@@ -75,7 +75,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementNotPresent(
                 SEARCH_CANCEL_BUTTON,
                 "X button is still present",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void clickCancelSearch()
@@ -83,7 +83,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 SEARCH_CANCEL_BUTTON,
                 "Cannot find X button to cancel search",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void typeInSearchLine(String searchLine) {
@@ -91,7 +91,7 @@ abstract public class SearchPageObject extends MainPageObject {
             waitForElementAndSendKeys(SEARCH_INPUT,
                     searchLine,
                     "Cannot find search input",
-                    Duration.ofSeconds(5));
+                    5);
         } else {
             By by = getLocatorByString(SEARCH_INPUT);
             WebElement element = driver.findElement(by);
@@ -121,7 +121,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClear(
                 search_bar_with_query1,
                 "Cannot find " + search_query1 + " in search input field",
-                Duration.ofSeconds(10));
+                10);
     }
 
     public void waitForSearchResult(String subString) {
@@ -129,7 +129,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementPresent(
                 search_result,
                 "Cannot find search result",
-                Duration.ofSeconds(20));
+                20);
     }
 
     public void clickOnFirstArticle() {
@@ -138,7 +138,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 FIRST_SEARCH_RESULT,
                 "Cannot find search result",
-                Duration.ofSeconds(20));
+                20);
 
         navigationUI.closeAllPopups();
     }
@@ -149,7 +149,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 getResultSearchElement(subString),
                 "Cannot find search result",
-                Duration.ofSeconds(10));
+                10);
 
         navigationUI.closeAllPopups();
     }
@@ -159,7 +159,7 @@ abstract public class SearchPageObject extends MainPageObject {
             this.waitForElementPresent(
                     SEARCH_RESULT_ELEMENT,
                     "No search results",
-                    Duration.ofSeconds(5));
+                    5);
         } catch (Exception e) {
             return 0; // если не найдено - возвращаем 0
         }
@@ -173,7 +173,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementPresent(
                 EMPTY_RESULTS_CONTAINER,
                 "Cannot find empty results container",
-                Duration.ofSeconds(15));
+                15);
         By by = this.getLocatorByString(EMPTY_RESULTS_CONTAINER);
         if (Platform.getInstance().isAndroid()) {
             assertElementHasText(

@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
@@ -9,6 +9,8 @@ import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ChangeAppConditionTests extends CoreTestCase {
     @Test

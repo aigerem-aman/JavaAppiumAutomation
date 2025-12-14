@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
@@ -10,7 +10,7 @@ import lib.ui.SearchPageObject;
 import lib.ui.WelcomePageObject;
 import org.junit.Test;
 
-public class GetStartedTest extends CoreTestCase {
+public class GetStartedTests extends CoreTestCase {
     @Test
     public void testSwipeThroughWelcome() {
         if (Platform.getInstance().isAndroid()) {

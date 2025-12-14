@@ -32,7 +32,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 folder_name_xpath,
                 "Cannot find  folder by name " + name_of_folder,
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void waitForArticleToDisappearByTitle(String title) {
@@ -40,7 +40,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForElementNotPresent(
                 article_xpath,
                 "Saved article is still present with title " + title,
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void waitForArticleToAppearByTitle(String title) {
@@ -48,7 +48,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForElementPresent(
                 article_xpath,
                 "Cannot find saved article by title " + title,
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void clickArticleByTitle(String title) {
@@ -64,7 +64,7 @@ abstract public class SavedPageObject extends MainPageObject {
             this.waitForElementAndClick(
                     DELETE_ARTICLE_BUTTON,
                     "Cannot find delete button",
-                    Duration.ofSeconds(5));
+                    5);
         }
         this.waitForArticleToDisappearByTitle(title);
     }
@@ -73,7 +73,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 READING_LISTS_SWITCHER,
                 "Cannot find reading lists switcher",
-                Duration.ofSeconds(5));
+                5);
     }
 }
 

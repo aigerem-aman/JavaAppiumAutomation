@@ -21,21 +21,21 @@ abstract public class NavigationUI extends MainPageObject {
         this.waitForElementAndClick(
                 NAVIGATE_UP_BUTTON,
                 "Cannot find Navigate up button",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void pressClose(){
         this.waitForElementAndClick(
                 CLOSE_BUTTON,
                 "Cannot find Close button",
-                Duration.ofSeconds(5));
+                5);
 }
 
     public void clickMyListButton() {
         this.waitForElementAndClick(
                 MY_LIST_BUTTON,
                 "Cannot find Save button",
-                Duration.ofSeconds(5));
+                5);
     }
 
     public void closeAllPopups() {

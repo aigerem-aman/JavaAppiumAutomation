@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import lib.CoreTestCase;
 import lib.ui.Factories.NavigationUIFactory;
@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SearchTests extends CoreTestCase {
     @Test
