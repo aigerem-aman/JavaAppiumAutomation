@@ -1,24 +1,25 @@
 package lib;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
- 
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import java.time.Duration;
 
 public class CoreTestCase {
 
-    protected AppiumDriver driver;
+    protected RemoteWebDriver driver;
 
     @Before
     public void setUp() throws Exception {
 
-
         driver = Platform.getInstance().getDriver();
         this.rotateScreenPortrait();
+        this.openWikiWebPageForMobileWeb();
     }
 
     @After
@@ -31,6 +32,8 @@ public class CoreTestCase {
             ((AndroidDriver) driver).rotate(ScreenOrientation.PORTRAIT);
         } else if (driver instanceof IOSDriver) {
             ((IOSDriver) driver).rotate(ScreenOrientation.PORTRAIT);
+        } else {
+            System.out.println("Method rotateScreenPortrait() does nothing for platform "+ Platform.getInstance().getPlatformVar());
         }
     }
 
@@ -39,12 +42,33 @@ public class CoreTestCase {
             ((AndroidDriver) driver).rotate(ScreenOrientation.LANDSCAPE);
         } else if (driver instanceof IOSDriver) {
             ((IOSDriver) driver).rotate(ScreenOrientation.LANDSCAPE);
+        } else {
+            System.out.println("Method rotateScreenPortrait() does nothing for platform "+ Platform.getInstance().getPlatformVar());
         }
     }
 
-    protected void backgroudApp(int seconds) {
-        driver.runAppInBackground(Duration.ofSeconds(seconds));
-        rotateScreenPortrait();
+
+    protected void backgroundApp(int seconds) {
+        if (driver instanceof InteractsWithApps) {
+            ((InteractsWithApps) driver)
+                    .runAppInBackground(Duration.ofSeconds(seconds));
+            rotateScreenPortrait();
+        } else {
+            System.out.println(
+                    "backgroundApp does nothing for platform "
+                            + Platform.getInstance().getPlatformVar()
+            );
+        }
+    }
+
+
+
+    protected void openWikiWebPageForMobileWeb() {
+        if (Platform.getInstance().isMW()) {
+            driver.get("https://en.wikipedia.org/?mobileaction=toggle_view_mobile");
+        } else {
+            System.out.println("Method rotateScreenPortrait() does nothing for platform "+ Platform.getInstance().getPlatformVar());
+        }
     }
 
 }

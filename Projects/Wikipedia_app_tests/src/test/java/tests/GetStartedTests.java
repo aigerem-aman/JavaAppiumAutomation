@@ -28,13 +28,12 @@ public class GetStartedTests extends CoreTestCase {
             welcomePageObject.ClickGetStartedButton();
             navigationUI.closeAllPopups();
             searchPageObject.searchBarPresent();
-        }
+        } else {}
     }
 
     @Test
     public void testPassThroughWelcome() {
-        if (Platform.getInstance().isAndroid()) {
-        } else {
+        if (Platform.getInstance().isIOS()) {
             WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
 
             welcomePageObject.waitForLearnMoreLink();
@@ -48,17 +47,20 @@ public class GetStartedTests extends CoreTestCase {
 
             welcomePageObject.waitForLearnMoreAboutOurPrivacyPolicyLink();
             welcomePageObject.ClickGetStartedButton();
-        }
+        } else {}
     }
 
     @Test
     public void testSkipWelcome() {
-        WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
-        NavigationUI navigationUI = NavigationUIFactory.get(driver);
-        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        if (Platform.getInstance().isMW()) {
+        } else {
+            WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
+            NavigationUI navigationUI = NavigationUIFactory.get(driver);
+            SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        welcomePageObject.clickSkipButton();
-        navigationUI.closeAllPopups();
-        searchPageObject.searchBarPresent();
+            welcomePageObject.clickSkipButton();
+            navigationUI.closeAllPopups();
+            searchPageObject.searchBarPresent();
+        }
     }
 }

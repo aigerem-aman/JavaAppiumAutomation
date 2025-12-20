@@ -1,7 +1,7 @@
 package lib.ui.ios;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.SavedPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSSavedPageObject extends SavedPageObject {
     static {
@@ -10,7 +10,7 @@ public class iOSSavedPageObject extends SavedPageObject {
         READING_LISTS_SWITCHER = "id~Reading lists";
         DELETE_ARTICLE_BUTTON = "id~swipe action delete";
     }
-    public iOSSavedPageObject(AppiumDriver driver){
+    public iOSSavedPageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

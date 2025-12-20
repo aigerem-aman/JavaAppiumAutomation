@@ -1,29 +1,29 @@
 package lib.ui.Factories;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
-import lib.ui.SearchPageObject;
 import lib.ui.WelcomePageObject;
-import lib.ui.android.AndroidSearchPageObject;
 import lib.ui.android.AndroidWelcomePageObject;
-import lib.ui.ios.iOSSearchPageObject;
 import lib.ui.ios.iOSWelcomePageObject;
+import lib.ui.mobile_web.MWWelcomePageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class WelcomePageObjectFactory extends WelcomePageObject {
     static{
         SKIP_BUTTON = "//XCUIElementTypeStaticText[@name='Skip']";
     }
 
-    public WelcomePageObjectFactory(AppiumDriver driver) {
+    public WelcomePageObjectFactory(RemoteWebDriver driver) {
         super(driver);
     }
 
-    public static WelcomePageObject get(AppiumDriver driver)
+    public static WelcomePageObject get(RemoteWebDriver driver)
     {
         if(Platform.getInstance().isAndroid()){
             return new AndroidWelcomePageObject(driver);
-        } else {
+        } else if (Platform.getInstance().isIOS()){
             return new iOSWelcomePageObject(driver);
+        } else {
+            return new MWWelcomePageObject(driver);
         }
     }
 }

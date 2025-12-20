@@ -1,7 +1,6 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
-import java.time.Duration;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class NavigationUI extends MainPageObject {
 
@@ -13,7 +12,7 @@ abstract public class NavigationUI extends MainPageObject {
             DONE_BUTTON,
             SKIP_BUTTON;
 
-    public NavigationUI(AppiumDriver driver) {
+    public NavigationUI(RemoteWebDriver driver) {
         super(driver);
     }
 

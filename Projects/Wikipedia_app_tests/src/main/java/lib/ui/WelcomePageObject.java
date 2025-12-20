@@ -1,11 +1,7 @@
 package lib.ui;
 
-
-import io.appium.java_client.AppiumDriver;
-import junit.framework.Assert;
 import lib.Platform;
-
-import java.time.Duration;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class WelcomePageObject extends MainPageObject
 {
@@ -19,7 +15,7 @@ abstract public class WelcomePageObject extends MainPageObject
     GET_STARTED_BUTTON,
     SKIP_BUTTON;
 
-    public WelcomePageObject(AppiumDriver driver)
+    public WelcomePageObject(RemoteWebDriver driver)
     {
         super(driver);
     }

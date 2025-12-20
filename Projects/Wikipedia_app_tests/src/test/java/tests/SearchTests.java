@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
@@ -29,7 +30,10 @@ public class SearchTests extends CoreTestCase {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
+        if (Platform.getInstance().isMW()) {
+        } else {
         navigationUI.closeAllPopups();
+        }
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         searchPageObject.waitForCancelButtonToAppear();

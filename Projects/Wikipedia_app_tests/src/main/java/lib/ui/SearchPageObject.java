@@ -1,16 +1,12 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
-import lib.ui.Factories.WelcomePageObjectFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.time.Duration;
 import java.util.List;
-
-import static java.awt.SystemColor.text;
 
 abstract public class SearchPageObject extends MainPageObject {
 
@@ -25,7 +21,7 @@ abstract public class SearchPageObject extends MainPageObject {
         EMPTY_RESULTS_CONTAINER,
         EMPTY_RESULTS_TEXT;
 
-    public SearchPageObject(AppiumDriver driver)
+    public SearchPageObject(RemoteWebDriver driver)
     {
         super(driver);
     }

@@ -1,9 +1,7 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
-
-import java.time.Duration;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class SavedPageObject extends MainPageObject {
 
@@ -23,7 +21,7 @@ abstract public class SavedPageObject extends MainPageObject {
         return ARTICLE_BY_TITLE_TPL.replace("{title}", title);
     }
 
-    public SavedPageObject(AppiumDriver driver) {
+    public SavedPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 

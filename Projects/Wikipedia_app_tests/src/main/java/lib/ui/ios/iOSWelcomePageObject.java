@@ -1,7 +1,7 @@
 package lib.ui.ios;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.WelcomePageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSWelcomePageObject extends WelcomePageObject {
 
@@ -15,7 +15,7 @@ public class iOSWelcomePageObject extends WelcomePageObject {
                 SKIP_BUTTON = "xpath~//XCUIElementTypeStaticText[@name='Skip']";
     }
 
-    public iOSWelcomePageObject(AppiumDriver driver) {
+    public iOSWelcomePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 }

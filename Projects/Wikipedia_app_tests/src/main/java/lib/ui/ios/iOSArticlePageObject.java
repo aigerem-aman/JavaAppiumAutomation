@@ -1,7 +1,7 @@
 package lib.ui.ios;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.ArticlePageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class iOSArticlePageObject extends ArticlePageObject {
     static {
@@ -14,7 +14,7 @@ public class iOSArticlePageObject extends ArticlePageObject {
         EXISTING_LIST = "xpath~//*[@resource-id='org.wikipedia:id/item_title' and @text='{SUBSTRING}']";
         CONFIRM_ADDING_LIST = "xpath~//XCUIElementTypeStaticText[@name='Create reading list']";
     }
-    public iOSArticlePageObject(AppiumDriver driver){
+    public iOSArticlePageObject(RemoteWebDriver driver){
         super(driver);
     };
 }
