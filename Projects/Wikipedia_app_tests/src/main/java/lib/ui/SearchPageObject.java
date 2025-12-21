@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
 
+
 abstract public class SearchPageObject extends MainPageObject {
 
     protected static  String
@@ -39,10 +40,14 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void initSearchInput() {
+        sleep(10);
+
         this.waitForElementPresent(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search bar",
                 5);
+
+        sleep(10);
 
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
@@ -94,10 +99,7 @@ abstract public class SearchPageObject extends MainPageObject {
 
             for (char c : searchLine.toCharArray()) {
                 element.sendKeys(String.valueOf(c));
-                try {
-                    Thread.sleep(3);
-                } catch (InterruptedException ignored) {
-                }
+                sleep(3);
             }
             element.sendKeys("\n");
         }
@@ -190,4 +192,11 @@ abstract public class SearchPageObject extends MainPageObject {
         By by = this.getLocatorByString(RESULT_TITLE_CONTAINER);
         return driver.findElements(by);
     }
+
+    protected void sleep(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException ignored) {}
+    }
+
 }
