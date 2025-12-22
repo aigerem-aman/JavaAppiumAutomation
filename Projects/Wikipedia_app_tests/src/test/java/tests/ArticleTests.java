@@ -1,15 +1,14 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.Factories.ArticlePageObjectFactory;
 import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class ArticleTests extends CoreTestCase {
     @Test
@@ -23,7 +22,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.typeInSearchLine("Iberian horse");
         searchPageObject.clickOnArticleBySubstring("Horses breeds native to Spain and Portugal");
         String article_title = articlePageObject.getArticleTitle("Iberian horse");
-        assertEquals(
+        Assert.assertEquals(
                 "Iberian horse",
                 article_title);
     }

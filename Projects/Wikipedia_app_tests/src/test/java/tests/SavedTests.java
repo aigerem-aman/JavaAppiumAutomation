@@ -1,6 +1,6 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.Factories.ArticlePageObjectFactory;
@@ -10,6 +10,7 @@ import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SavedPageObject;
 import lib.ui.SearchPageObject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class SavedTests extends CoreTestCase {
         savedPageObject.waitForArticleToAppearByTitle(search_query2);
         savedPageObject.clickArticleByTitle(search_query2);
         String article_title = articlePageObject.getArticleTitle(search_query2);
-        assertEquals(
+        Assert.assertEquals(
                 search_query2,
                 article_title);
     }

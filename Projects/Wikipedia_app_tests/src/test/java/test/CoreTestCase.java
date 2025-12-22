@@ -1,8 +1,9 @@
-package lib;
+package test;
 
 import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import lib.Platform;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
@@ -23,7 +24,7 @@ public class CoreTestCase {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
         driver.quit();
     }
 

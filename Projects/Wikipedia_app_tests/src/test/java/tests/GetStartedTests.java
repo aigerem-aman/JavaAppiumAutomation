@@ -1,6 +1,6 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
