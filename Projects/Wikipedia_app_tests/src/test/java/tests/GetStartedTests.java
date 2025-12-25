@@ -28,7 +28,7 @@ public class GetStartedTests extends CoreTestCase {
             welcomePageObject.ClickGetStartedButton();
             navigationUI.closeAllPopups();
             searchPageObject.searchBarPresent();
-        } else {}
+        }
     }
 
     @Test
@@ -47,13 +47,12 @@ public class GetStartedTests extends CoreTestCase {
 
             welcomePageObject.waitForLearnMoreAboutOurPrivacyPolicyLink();
             welcomePageObject.ClickGetStartedButton();
-        } else {}
+        }
     }
 
     @Test
     public void testSkipWelcome() {
-        if (Platform.getInstance().isMW()) {
-        } else {
+        if (!Platform.getInstance().isMW()) {
             WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
             NavigationUI navigationUI = NavigationUIFactory.get(driver);
             SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);

@@ -5,7 +5,6 @@ import lib.ui.NavigationUI;
 import lib.ui.android.AndroidNavigationUI;
 import lib.ui.ios.iOSNavigationUI;
 import lib.ui.mobile_web.MWNavigationUI;
-import lib.ui.mobile_web.MWWelcomePageObject;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class NavigationUIFactory {
@@ -15,7 +14,7 @@ public class NavigationUIFactory {
             return new AndroidNavigationUI(driver);
         } else if(Platform.getInstance().isIOS()){
             return new iOSNavigationUI(driver);
-        } else{
+        } else {
             return  new MWNavigationUI(driver);
         }
     }

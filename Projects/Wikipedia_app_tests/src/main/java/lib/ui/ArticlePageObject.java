@@ -1,11 +1,8 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.time.Duration;
 
 abstract public class ArticlePageObject extends MainPageObject {
 
@@ -17,7 +14,8 @@ abstract public class ArticlePageObject extends MainPageObject {
             CREATE_NEW_LIST_BUTTON,
             MY_LIST_NAME_INPUT,
             EXISTING_LIST,
-            CONFIRM_ADDING_LIST;
+            CONFIRM_ADDING_LIST,
+            REMOVE_FROM_MY_LIST;
 
     public ArticlePageObject(RemoteWebDriver driver) {
         super(driver);
@@ -47,8 +45,10 @@ abstract public class ArticlePageObject extends MainPageObject {
         WebElement title_element = waitForTitleElement(subString);
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             return title_element.getAttribute("name");
+        } else {
+            return title_element.getText();
         }
     }
 
@@ -58,8 +58,13 @@ abstract public class ArticlePageObject extends MainPageObject {
                     FOOTER,
                     "Cannot find the end of the article",
                     200);
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             this.swipeUpTillElementAppear(
+                    FOOTER,
+                    "Cannot find the end of the article",
+                    200);
+        } else {
+            this.scrollWebPageTillElementNotVisible(
                     FOOTER,
                     "Cannot find the end of the article",
                     200);
@@ -154,4 +159,41 @@ abstract public class ArticlePageObject extends MainPageObject {
                 "Cannot find list by name " + name_of_folder,
                 15);
     }
+
+    public void removeArticleFromSavedIfAlreadySaved() {
+        if (this.isElementPresent(REMOVE_FROM_MY_LIST)) {
+            this.waitForElementAndClick(
+                    REMOVE_FROM_MY_LIST,
+                    "Cannot find remove from save button",
+                    5
+            );
+            this.waitForElementNotPresent(
+                    REMOVE_FROM_MY_LIST,
+                    "Remove from watchlist button is still present",
+                    10);
+        }
+    }
+
+    public void removeArticleFromSaved() {
+        this.waitForElementAndClick(
+                REMOVE_FROM_MY_LIST,
+                "Cannot find remove from save button",
+                5
+        );
+        driver.navigate().refresh();
+
+        this.waitForElementNotPresent(
+                REMOVE_FROM_MY_LIST,
+                "Remove from watchlist button is still present",
+                10);
+    }
+
+    public void addArticleToWatchlist() {
+        this.removeArticleFromSavedIfAlreadySaved();
+        this.waitForElementAndClick(
+                SAVE_BUTTON,
+                "Cannot find option to add article to reading list",
+                10);
+    }
+
 }

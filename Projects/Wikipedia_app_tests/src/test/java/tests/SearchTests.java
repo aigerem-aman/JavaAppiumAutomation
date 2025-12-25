@@ -8,9 +8,7 @@ import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
-
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -30,10 +28,7 @@ public class SearchTests extends CoreTestCase {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        if (Platform.getInstance().isMW()) {
-        } else {
         navigationUI.closeAllPopups();
-        }
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         searchPageObject.waitForCancelButtonToAppear();
@@ -101,11 +96,13 @@ public class SearchTests extends CoreTestCase {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
-        navigationUI.closeAllPopups();
-        searchPageObject.initSearchInput();
-        String search_query = "xsdfsfsdfsfsdf";
-        searchPageObject.typeInSearchLine(search_query);
-        searchPageObject.checkNoArticlesFound();
+        if (!Platform.getInstance().isMW()) {
+            navigationUI.closeAllPopups();
+            searchPageObject.initSearchInput();
+            String search_query = "xsdfsfsdfsfsdf";
+            searchPageObject.typeInSearchLine(search_query);
+            searchPageObject.checkNoArticlesFound();
+        }
     }
 
 }

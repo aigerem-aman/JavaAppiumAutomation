@@ -1,5 +1,6 @@
 package lib.ui;
 
+import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class NavigationUI extends MainPageObject {
@@ -7,10 +8,12 @@ abstract public class NavigationUI extends MainPageObject {
     protected static String
             NAVIGATE_UP_BUTTON,
             MY_LIST_BUTTON,
+            NAVIGATION_BUTTON,
             CLOSE_BUTTON,
             GOT_IT_BUTTON,
             DONE_BUTTON,
-            SKIP_BUTTON;
+            SKIP_BUTTON,
+            LOGIN_SIDEBAR_BUTTON;
 
     public NavigationUI(RemoteWebDriver driver) {
         super(driver);
@@ -31,17 +34,34 @@ abstract public class NavigationUI extends MainPageObject {
 }
 
     public void clickMyListButton() {
-        this.waitForElementAndClick(
-                MY_LIST_BUTTON,
-                "Cannot find Save button",
-                5);
+        if (!Platform.getInstance().isMW()) {
+            this.waitForElementAndClick(
+                    MY_LIST_BUTTON,
+                    "Cannot find Save button",
+                    5);
+        } else {
+            this.openSidebar();
+            this.waitForElementAndClick(
+                    MY_LIST_BUTTON,
+                    "Cannot find Watchlist button",
+                    5);
+        }
     }
 
     public void closeAllPopups() {
-        this.clickWhilePresent(SKIP_BUTTON, 5);
-        this.clickWhilePresent(DONE_BUTTON, 5);
-        this.clickWhilePresent(CLOSE_BUTTON, 5);
-        this.clickWhilePresent(GOT_IT_BUTTON, 5);
+        if (!Platform.getInstance().isMW()) {
+            this.clickWhilePresent(SKIP_BUTTON, 5);
+            this.clickWhilePresent(DONE_BUTTON, 5);
+            this.clickWhilePresent(CLOSE_BUTTON, 5);
+            this.clickWhilePresent(GOT_IT_BUTTON, 5);
+        }
+    }
+
+    public void openSidebar() {
+        this.waitForElementAndClick(
+                NAVIGATION_BUTTON,
+                "Cannot find Navigation Button",
+                5);
     }
 }
 

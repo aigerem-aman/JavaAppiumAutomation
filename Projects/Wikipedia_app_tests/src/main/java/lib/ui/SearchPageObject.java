@@ -40,25 +40,30 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void initSearchInput() {
-        sleep(10);
-
-        this.waitForElementPresent(
+        this.waitForElementClickable(
                 SEARCH_INIT_ELEMENT,
-                "Cannot find search bar",
-                5);
+                "Search input is not clickable",
+                60
+        );
 
-        sleep(10);
 
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search input field",
                 5);
+        if (Platform.getInstance().isMW()) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     public void assertTextInSearchElement(String expected_text)
     {
         assertElementHasText(
-                SEARCH_INIT_ELEMENT,
+                SEARCH_INPUT,
                 expected_text,
                 "Texts do not match");
     }
@@ -88,12 +93,7 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void typeInSearchLine(String searchLine) {
-        if (Platform.getInstance().isAndroid()) {
-            waitForElementAndSendKeys(SEARCH_INPUT,
-                    searchLine,
-                    "Cannot find search input",
-                    5);
-        } else {
+        if (Platform.getInstance().isIOS()) {
             By by = getLocatorByString(SEARCH_INPUT);
             WebElement element = driver.findElement(by);
 
@@ -102,6 +102,10 @@ abstract public class SearchPageObject extends MainPageObject {
                 sleep(3);
             }
             element.sendKeys("\n");
+        } else {waitForElementAndSendKeys(SEARCH_INPUT,
+                searchLine,
+                "Cannot find search input",
+                20);
         }
     }
 
@@ -114,7 +118,7 @@ abstract public class SearchPageObject extends MainPageObject {
             search_bar_with_query1 = "xpath~//*[contains(@text, '" +  search_query1 + "')]";
         } else {
             search_bar_with_query1 = "xpath~//*[contains(@value, '" +  search_query1 + "')]";
-        };
+        }
 
         this.waitForElementAndClear(
                 search_bar_with_query1,
@@ -172,12 +176,11 @@ abstract public class SearchPageObject extends MainPageObject {
                 EMPTY_RESULTS_CONTAINER,
                 "Cannot find empty results container",
                 15);
-        By by = this.getLocatorByString(EMPTY_RESULTS_CONTAINER);
         if (Platform.getInstance().isAndroid()) {
             assertElementHasText(
                     EMPTY_RESULTS_CONTAINER,
                     EMPTY_RESULTS_TEXT,
-                    "Expected text: \"No results\", but actual text was different"
+                    "Expected text: 'No results', but actual text was different"
             );
         } else {
             assertElementHasText(

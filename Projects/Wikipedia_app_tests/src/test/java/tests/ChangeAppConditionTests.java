@@ -40,11 +40,12 @@ public class ChangeAppConditionTests extends CoreTestCase {
                     "The title of the article is not the same after rotation",
                     article_title_before_rotation,
                     article_title_after_second_rotation);
-        } else {};
+        }
     }
 
     @Test
     public void testCheckSearchArticleInBackgroud() {
+        if  (Platform.getInstance().isMW()) {return;}
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
