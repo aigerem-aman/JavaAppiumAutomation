@@ -55,7 +55,11 @@ public class SavedTests extends CoreTestCase {
         } else if (Platform.getInstance().isIOS()) {
             navigationUI.pressClose();
         }
-
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         navigationUI.clickMyListButton();
         navigationUI.closeAllPopups();
         if (Platform.getInstance().isIOS()) {
@@ -64,11 +68,13 @@ public class SavedTests extends CoreTestCase {
         if (!Platform.getInstance().isMW()) {
             savedPageObject.openFolderByName(name_of_folder);
             navigationUI.closeAllPopups();
+        }
             String title = "Java (programming language)";
             savedPageObject.swipeArticleToDelete(title);
-        } else {
-            articlePageObject.removeArticleFromSaved();
-        }
+
+            if (Platform.getInstance().isMW()) {
+                driver.navigate().refresh();
+            }
     }
 
 

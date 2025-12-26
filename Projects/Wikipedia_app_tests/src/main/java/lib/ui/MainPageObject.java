@@ -112,7 +112,7 @@ public class MainPageObject {
                 actualText = element.getAttribute("value");
             }
             if (actualText == null || actualText.isEmpty()) {
-                actualText = element.getAttribute("name");      // иногда name
+                actualText = element.getAttribute("name");
             }
         }
 
@@ -289,5 +289,23 @@ public class MainPageObject {
     {
         By by = getLocatorByString(locator);
         return getNumberOfElements(by) > 0;
+    }
+
+    public void tryClickElementWithFewAttempts(String locator, String error_message, int amount_of_attempts)
+    {
+        int current_attempt = 0;
+        boolean need_more_attempts = true;
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(locator, error_message, 1);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attempt > amount_of_attempts) {
+                    this.waitForElementAndClick(locator, error_message, 1);
+                }
+            }
+            ++current_attempt;
+        }
+
     }
 }

@@ -9,7 +9,8 @@ abstract public class SavedPageObject extends MainPageObject {
             FOLDER_BY_NAME_TPL,
             ARTICLE_BY_TITLE_TPL,
             READING_LISTS_SWITCHER,
-            DELETE_ARTICLE_BUTTON;
+            DELETE_ARTICLE_BUTTON,
+            REMOVE_BY_TITLE_TPL;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -19,6 +20,11 @@ abstract public class SavedPageObject extends MainPageObject {
     private static String getSavedArticleXpathByTitle(String title)
     {
         return ARTICLE_BY_TITLE_TPL.replace("{title}", title);
+    }
+
+    private static String getRemoveButtonByTitle(String title)
+    {
+        return REMOVE_BY_TITLE_TPL.replace("{title}", title);
     }
 
     public SavedPageObject(RemoteWebDriver driver) {
@@ -55,14 +61,25 @@ abstract public class SavedPageObject extends MainPageObject {
 
     public void swipeArticleToDelete(String title) {
         String article_xpath = getSavedArticleXpathByTitle(title);
-        this.swipeElementToLeft(
-                article_xpath,
-                "Cannot find the article to delete");
-        if (Platform.getInstance().isIOS()) {
+
+        if (!Platform.getInstance().isMW()) {
+            this.swipeElementToLeft(
+                    article_xpath,
+                    "Cannot find the article to delete");
+            if (Platform.getInstance().isIOS()) {
+                this.waitForElementAndClick(
+                        DELETE_ARTICLE_BUTTON,
+                        "Cannot find delete button",
+                        5);
+            }
+        } else {
+            String remove_locator = getRemoveButtonByTitle(title);
             this.waitForElementAndClick(
-                    DELETE_ARTICLE_BUTTON,
-                    "Cannot find delete button",
-                    5);
+                    remove_locator,
+                    "Cannot find remove button",
+                    10
+            );
+
         }
         this.waitForArticleToDisappearByTitle(title);
     }

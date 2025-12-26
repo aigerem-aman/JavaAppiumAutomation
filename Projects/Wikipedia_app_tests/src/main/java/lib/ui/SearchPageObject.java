@@ -186,7 +186,7 @@ abstract public class SearchPageObject extends MainPageObject {
             assertElementHasText(
                     EMPTY_RESULTS_CONTAINER,
                     EMPTY_RESULTS_TEXT,
-                    "Expected text: \"No results\", but actual text was different"
+                    "Expected text: 'No results', but actual text was different"
             );
         }
     }

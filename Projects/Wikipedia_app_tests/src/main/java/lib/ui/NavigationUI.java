@@ -58,7 +58,7 @@ abstract public class NavigationUI extends MainPageObject {
     }
 
     public void openSidebar() {
-        this.waitForElementAndClick(
+        this.tryClickElementWithFewAttempts(
                 NAVIGATION_BUTTON,
                 "Cannot find Navigation Button",
                 5);
