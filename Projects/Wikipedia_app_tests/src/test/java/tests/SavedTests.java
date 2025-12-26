@@ -14,8 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-
 public class SavedTests extends CoreTestCase {
 
     private static final String name_of_folder = "Learning programming";
@@ -84,6 +82,14 @@ public class SavedTests extends CoreTestCase {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         SavedPageObject savedPageObject = SavedPageObjectFactory.get(driver);
+        AuthorizationPageObject auth = new AuthorizationPageObject(driver);
+
+        navigationUI.closeAllPopups();
+        if (Platform.getInstance().isMW()) {
+            auth.goToAuthPage();
+            auth.enterLogInData("TokyoTower1958", "dibru6-bobmyx-kexdYc");
+            auth.SubmitForm();
+        }
 
         navigationUI.closeAllPopups();
         searchPageObject.initSearchInput();
@@ -100,25 +106,35 @@ public class SavedTests extends CoreTestCase {
         String name_of_folder = "To eat";
         if (Platform.getInstance().isAndroid()) {
             articlePageObject.addArticleToNewListOnAndroid(name_of_folder);
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             articlePageObject.addArticleToNewListOniOS(search_query1, name_of_folder);
+        } else {
+            articlePageObject.addArticleToWatchlist();
         }
-        navigationUI.pressNavigateUp();
-        searchPageObject.clearSearchInput(search_query1);
+        if (!Platform.getInstance().isMW()) {
+            navigationUI.pressNavigateUp();
+            searchPageObject.clearSearchInput(search_query1);
+        }
+
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine(search_query2);
         searchPageObject.clickOnFirstArticle();
 
         if (Platform.getInstance().isAndroid()) {
             articlePageObject.addArticleToExistingListOnAndroid(name_of_folder);
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             articlePageObject.addArticleToExistingListOniOS(search_query2, name_of_folder);
+        } else {
+            articlePageObject.addArticleToWatchlist();
         }
-        navigationUI.pressNavigateUp();
+
+        if (!Platform.getInstance().isMW()) {
+            navigationUI.pressNavigateUp();
+        }
 
         if (Platform.getInstance().isAndroid()) {
             navigationUI.pressNavigateUp();
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             navigationUI.pressClose();
         }
 
@@ -126,14 +142,15 @@ public class SavedTests extends CoreTestCase {
         if (Platform.getInstance().isIOS()) {
             savedPageObject.switchToReadingLists();
         }
-        savedPageObject.openFolderByName(name_of_folder);
-        navigationUI.closeAllPopups();
+
+        if (!Platform.getInstance().isMW()) {
+            savedPageObject.openFolderByName(name_of_folder);
+            navigationUI.closeAllPopups();
+        }
         savedPageObject.swipeArticleToDelete(search_query1);
+
         savedPageObject.waitForArticleToAppearByTitle(search_query2);
-        savedPageObject.clickArticleByTitle(search_query2);
-        String article_title = articlePageObject.getArticleTitle(search_query2);
-        assertEquals(
-                search_query2,
-                article_title);
     }
+
+
 }

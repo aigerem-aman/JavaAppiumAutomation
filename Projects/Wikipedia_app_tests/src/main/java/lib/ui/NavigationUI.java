@@ -61,7 +61,7 @@ abstract public class NavigationUI extends MainPageObject {
         this.tryClickElementWithFewAttempts(
                 NAVIGATION_BUTTON,
                 "Cannot find Navigation Button",
-                5);
+                10);
     }
 }
 

@@ -46,7 +46,6 @@ abstract public class SearchPageObject extends MainPageObject {
                 60
         );
 
-
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find search input field",
@@ -93,19 +92,19 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void typeInSearchLine(String searchLine) {
-        if (Platform.getInstance().isIOS()) {
+        if (!Platform.getInstance().isAndroid()) {
             By by = getLocatorByString(SEARCH_INPUT);
             WebElement element = driver.findElement(by);
 
             for (char c : searchLine.toCharArray()) {
                 element.sendKeys(String.valueOf(c));
-                sleep(3);
+                sleep(400);
             }
-            element.sendKeys("\n");
-        } else {waitForElementAndSendKeys(SEARCH_INPUT,
-                searchLine,
-                "Cannot find search input",
-                20);
+        } else {
+            waitForElementAndSendKeys(SEARCH_INPUT,
+                    searchLine,
+                    "Cannot find search input",
+                    20);
         }
     }
 
@@ -168,7 +167,6 @@ abstract public class SearchPageObject extends MainPageObject {
 
         By by = this.getLocatorByString(SEARCH_RESULT_ELEMENT);
         return driver.findElements(by).size();
-
     }
 
     public void checkNoArticlesFound() {
@@ -196,9 +194,9 @@ abstract public class SearchPageObject extends MainPageObject {
         return driver.findElements(by);
     }
 
-    protected void sleep(int seconds) {
+    protected void sleep(int milliseconds) {
         try {
-            Thread.sleep(seconds * 1000L);
+            Thread.sleep(milliseconds);
         } catch (InterruptedException ignored) {}
     }
 

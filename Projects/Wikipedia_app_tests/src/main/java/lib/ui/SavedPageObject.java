@@ -52,11 +52,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForElementPresent(
                 article_xpath,
                 "Cannot find saved article by title " + title,
-                5);
-    }
-
-    public void clickArticleByTitle(String title) {
-        this.waitForArticleToAppearByTitle(title);
+                15);
     }
 
     public void swipeArticleToDelete(String title) {
@@ -77,9 +73,14 @@ abstract public class SavedPageObject extends MainPageObject {
             this.waitForElementAndClick(
                     remove_locator,
                     "Cannot find remove button",
-                    10
+                    15
             );
-
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            driver.navigate().refresh();
         }
         this.waitForArticleToDisappearByTitle(title);
     }

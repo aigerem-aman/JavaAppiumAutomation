@@ -174,26 +174,16 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
-    public void removeArticleFromSaved() {
-        this.waitForElementAndClick(
-                REMOVE_FROM_MY_LIST,
-                "Cannot find remove from save button",
-                5
-        );
-        driver.navigate().refresh();
-
-        this.waitForElementNotPresent(
-                REMOVE_FROM_MY_LIST,
-                "Remove from watchlist button is still present",
-                10);
-    }
-
     public void addArticleToWatchlist() {
         this.removeArticleFromSavedIfAlreadySaved();
         this.waitForElementAndClick(
                 SAVE_BUTTON,
                 "Cannot find option to add article to reading list",
                 10);
+        this.waitForElementPresent(
+                REMOVE_FROM_MY_LIST,
+                "The article wasn't added to reading list",
+                15);
     }
 
 }
