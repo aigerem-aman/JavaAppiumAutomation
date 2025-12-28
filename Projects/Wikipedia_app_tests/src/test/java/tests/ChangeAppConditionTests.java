@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
@@ -15,6 +17,12 @@ import static org.junit.Assert.assertEquals;
 
 public class ChangeAppConditionTests extends CoreTestCase {
     @Test
+    @Epic("Tests for articles")
+    @Features(value={@Feature(value="Search")})
+    @DisplayName("Article title doesn't change when the screen has been rotated")
+    @Description("We open found article and check that its title is the same before and after rotation")
+    @Severity(value= SeverityLevel.MINOR)
+    @Step("Starting test testArticleTitleShouldNotChangeWhenRotated")
     public void testArticleTitleShouldNotChangeWhenRotated() {
         if (Platform.getInstance().isAndroid()) {NavigationUI navigationUI = NavigationUIFactory.get(driver);
             SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -45,7 +53,13 @@ public class ChangeAppConditionTests extends CoreTestCase {
     }
 
     @Test
-    public void testCheckSearchArticleInBackgroud() {
+    @Epic("Tests for search results")
+    @Features(value={@Feature(value="Search")})
+    @DisplayName("Search results do not change after sending app to background and opening it back")
+    @Description("We search for article and check that it is still present in search results after getting the app back from background")
+    @Severity(value= SeverityLevel.MINOR)
+    @Step("Starting test testCheckSearchArticleInBackground")
+    public void testCheckSearchArticleInBackground() {
         if  (Platform.getInstance().isMW()) {return;}
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);

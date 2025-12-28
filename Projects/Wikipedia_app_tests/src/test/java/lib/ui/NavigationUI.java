@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -19,6 +20,7 @@ abstract public class NavigationUI extends MainPageObject {
         super(driver);
     }
 
+    @Step("Pressing 'Navigate up'")
     public void pressNavigateUp() {
         this.waitForElementAndClick(
                 NAVIGATE_UP_BUTTON,
@@ -26,13 +28,15 @@ abstract public class NavigationUI extends MainPageObject {
                 5);
     }
 
+    @Step("Pressing 'Close'")
     public void pressClose(){
         this.waitForElementAndClick(
                 CLOSE_BUTTON,
                 "Cannot find Close button",
                 5);
-}
+    }
 
+    @Step("Opening Saved articles")
     public void clickMyListButton() {
         if (!Platform.getInstance().isMW()) {
             this.waitForElementAndClick(
@@ -48,6 +52,7 @@ abstract public class NavigationUI extends MainPageObject {
         }
     }
 
+    @Step("Closing all popups")
     public void closeAllPopups() {
         if (!Platform.getInstance().isMW()) {
             this.clickWhilePresent(SKIP_BUTTON, 5);
@@ -57,6 +62,7 @@ abstract public class NavigationUI extends MainPageObject {
         }
     }
 
+    @Step("Opening side bar")
     public void openSidebar() {
         this.tryClickElementWithFewAttempts(
                 NAVIGATION_BUTTON,

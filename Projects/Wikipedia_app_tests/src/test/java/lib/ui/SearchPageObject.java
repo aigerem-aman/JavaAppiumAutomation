@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
 import org.openqa.selenium.By;
@@ -32,6 +33,7 @@ abstract public class SearchPageObject extends MainPageObject {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
 
+    @Step("Waiting for search bar to be present")
     public void searchBarPresent(){
         this.waitForElementPresent(
                 SEARCH_INIT_ELEMENT,
@@ -39,6 +41,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 10);
     }
 
+    @Step("Initiating search")
     public void initSearchInput() {
         this.waitForElementClickable(
                 SEARCH_INIT_ELEMENT,
@@ -59,6 +62,7 @@ abstract public class SearchPageObject extends MainPageObject {
         }
     }
 
+    @Step("Asserting that text in search input field matches expected")
     public void assertTextInSearchElement(String expected_text)
     {
         assertElementHasText(
@@ -67,6 +71,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 "Texts do not match");
     }
 
+    @Step("Waiting for 'Cancel search' button to appear")
     public void waitForCancelButtonToAppear()
     {
         this.waitForElementPresent(
@@ -75,6 +80,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Waiting for 'Cancel search' button to disappear")
     public void waitForCancelButtonToDisappear()
     {
         this.waitForElementNotPresent(
@@ -83,6 +89,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Cancelling search")
     public void clickCancelSearch()
     {
         this.waitForElementAndClick(
@@ -91,6 +98,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Typing in '{searchLine}' in search input field")
     public void typeInSearchLine(String searchLine) {
         if (!Platform.getInstance().isAndroid()) {
             By by = getLocatorByString(SEARCH_INPUT);
@@ -108,7 +116,7 @@ abstract public class SearchPageObject extends MainPageObject {
         }
     }
 
-
+    @Step("Clearing search input field")
     public void clearSearchInput(String search_query1)
     {
         String search_bar_with_query1;
@@ -125,6 +133,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 10);
     }
 
+    @Step("Waiting for search result to appear")
     public void waitForSearchResult(String subString) {
         String search_result = getResultSearchElement(subString);
         this.waitForElementPresent(
@@ -133,6 +142,7 @@ abstract public class SearchPageObject extends MainPageObject {
                 20);
     }
 
+    @Step("Opening first article in search results and closing all popups for Android and iOS")
     public void clickOnFirstArticle() {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
 
@@ -144,6 +154,7 @@ abstract public class SearchPageObject extends MainPageObject {
         navigationUI.closeAllPopups();
     }
 
+    @Step("Opening article with subtitle '{subString}' and closing all popups for Android and iOS")
     public void clickOnArticleBySubstring(String subString) {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
 
@@ -155,6 +166,7 @@ abstract public class SearchPageObject extends MainPageObject {
         navigationUI.closeAllPopups();
     }
 
+    @Step("Counting amount of found articles")
     public int getAmountOfFoundArticles() {
         try {
             this.waitForElementPresent(
@@ -169,6 +181,7 @@ abstract public class SearchPageObject extends MainPageObject {
         return driver.findElements(by).size();
     }
 
+    @Step("Checking there is a placeholder when no results found")
     public void checkNoArticlesFound() {
         this.waitForElementPresent(
                 EMPTY_RESULTS_CONTAINER,
@@ -180,15 +193,16 @@ abstract public class SearchPageObject extends MainPageObject {
                     EMPTY_RESULTS_TEXT,
                     "Expected text: 'No results', but actual text was different"
             );
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             assertElementHasText(
                     EMPTY_RESULTS_CONTAINER,
                     EMPTY_RESULTS_TEXT,
-                    "Expected text: 'No results', but actual text was different"
+                    "Expected text: 'No results found', but actual text was different"
             );
         }
     }
 
+    @Step("Getting titles of all found articles")
     public List<WebElement> getAllSearchResults() {
         By by = this.getLocatorByString(RESULT_TITLE_CONTAINER);
         return driver.findElements(by);

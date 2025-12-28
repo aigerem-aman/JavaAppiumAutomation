@@ -1,7 +1,9 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Attachment;
 import lib.Platform;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
@@ -10,6 +12,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -306,6 +312,29 @@ public class MainPageObject {
             }
             ++current_attempt;
         }
+    }
+    public String takeScreenshot(String name)
+    {
+        TakesScreenshot ts = (TakesScreenshot)this.driver;
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String path = System.getProperty("user.dir") + "/" + name + "_screenshot.png";
+        try {
+            FileUtils.copyFile(source, new File(path));
+            System.out.println("Screenshot taken: " + path);
+        } catch (Exception e) {
+            System.out.println("Cannot take screenshot. Error: " + e.getMessage());
+        }
+        return path;
+    }
 
+    @Attachment
+    public static byte[] screenshot(String path)
+    { byte[] bytes = new byte[0];
+    try{
+        bytes = Files.readAllBytes(Paths.get(path));
+    } catch (IOException e) {
+        System.out.println("Cannot get bytes from screenshot. Error: " + e.getMessage());
+    }
+    return bytes;
     }
 }

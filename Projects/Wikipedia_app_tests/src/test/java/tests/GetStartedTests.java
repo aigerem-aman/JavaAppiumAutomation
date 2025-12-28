@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
@@ -10,8 +12,14 @@ import lib.ui.SearchPageObject;
 import lib.ui.WelcomePageObject;
 import org.junit.Test;
 
+@Epic("Tests for starting page")
 public class GetStartedTests extends CoreTestCase {
     @Test
+    @Features(value={@Feature(value="Welcome Page")})
+    @DisplayName("Swipe through welcome pages")
+    @Description("We go through welcome pages by swiping")
+    @Severity(value=SeverityLevel.MINOR)
+    @Step("Starting test testSwipeThroughWelcome")
     public void testSwipeThroughWelcome() {
         if (Platform.getInstance().isAndroid()) {
             WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
@@ -32,6 +40,11 @@ public class GetStartedTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value={@Feature(value="Welcome Page")})
+    @DisplayName("Pass through welcome pages")
+    @Description("We go through welcome pages by pressing buttons to continue")
+    @Severity(value=SeverityLevel.MINOR)
+    @Step("Starting test testPassThroughWelcome")
     public void testPassThroughWelcome() {
         if (Platform.getInstance().isIOS()) {
             WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);
@@ -51,6 +64,11 @@ public class GetStartedTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value={@Feature(value="Welcome Page")})
+    @DisplayName("Skip welcome pages")
+    @Description("We skip welcome pages")
+    @Severity(value=SeverityLevel.MINOR)
+    @Step("Starting test testSkipWelcome")
     public void testSkipWelcome() {
         if (!Platform.getInstance().isMW()) {
             WelcomePageObject welcomePageObject = WelcomePageObjectFactory.get(driver);

@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -17,11 +19,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Epic("Tests for Saved articles")
 public class SavedTests extends CoreTestCase {
-
     private static final String name_of_folder = "Learning programming";
 
     @Test
+    @Features(value={@Feature(value="Article"), @Feature(value="Saved")})
+    @DisplayName("Delete article from Saved")
+    @Description("We add article to Saved and then delete it from the list")
+    @Severity(value=SeverityLevel.CRITICAL)
+    @Step("Starting test testSaveArticleToMyListThenDeleteArticle")
     public void testSaveArticleToMyListThenDeleteArticle() {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -71,7 +78,7 @@ public class SavedTests extends CoreTestCase {
             navigationUI.closeAllPopups();
         }
             String title = "Java (programming language)";
-            savedPageObject.swipeArticleToDelete(title);
+            savedPageObject.deleteArticleFromSaved(title);
 
             if (Platform.getInstance().isMW()) {
                 driver.navigate().refresh();
@@ -79,6 +86,11 @@ public class SavedTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value={@Feature(value="Article"), @Feature(value="Saved")})
+    @DisplayName("Only Deleted Article Gets Deleted")
+    @Description("We add 2 articles to Saved and then delete one from the list")
+    @Severity(value=SeverityLevel.CRITICAL)
+    @Step("Starting test testOnlyDeletedArticleGetsDeleted")
     public void testOnlyDeletedArticleGetsDeleted() {
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
@@ -149,7 +161,7 @@ public class SavedTests extends CoreTestCase {
             savedPageObject.openFolderByName(name_of_folder);
             navigationUI.closeAllPopups();
         }
-        savedPageObject.swipeArticleToDelete(search_query1);
+        savedPageObject.deleteArticleFromSaved(search_query1);
 
         savedPageObject.waitForArticleToAppearByTitle(search_query2);
     }

@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -31,6 +32,7 @@ abstract public class SavedPageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Opening folder by name '{name_of_folder}'")
     public void openFolderByName(String name_of_folder) {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(
@@ -39,6 +41,7 @@ abstract public class SavedPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Checking that correct article was deleted")
     public void waitForArticleToDisappearByTitle(String title) {
         String article_xpath = getSavedArticleXpathByTitle(title);
         this.waitForElementNotPresent(
@@ -47,6 +50,7 @@ abstract public class SavedPageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Locating article by title")
     public void waitForArticleToAppearByTitle(String title) {
         String article_xpath = getSavedArticleXpathByTitle(title);
         this.waitForElementPresent(
@@ -55,7 +59,8 @@ abstract public class SavedPageObject extends MainPageObject {
                 15);
     }
 
-    public void swipeArticleToDelete(String title) {
+    @Step("Deleting article from saved")
+    public void deleteArticleFromSaved(String title) {
         String article_xpath = getSavedArticleXpathByTitle(title);
 
         if (!Platform.getInstance().isMW()) {
@@ -85,6 +90,7 @@ abstract public class SavedPageObject extends MainPageObject {
         this.waitForArticleToDisappearByTitle(title);
     }
 
+    @Step("Switching to Reading lists")
     public void switchToReadingLists() {
         this.waitForElementAndClick(
                 READING_LISTS_SWITCHER,

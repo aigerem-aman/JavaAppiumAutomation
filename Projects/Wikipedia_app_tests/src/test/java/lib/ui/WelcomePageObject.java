@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -19,6 +20,8 @@ abstract public class WelcomePageObject extends MainPageObject
     {
         super(driver);
     }
+
+    @Step("Waiting for 'Learn more' link")
     public void waitForLearnMoreLink()
     {
         this.waitForElementPresent(
@@ -26,6 +29,8 @@ abstract public class WelcomePageObject extends MainPageObject
                 "Cannot find 'Learn more about Wikipedia'",
                 10);
     }
+
+    @Step("Waiting for 'New ways to explore' text")
     public void waitForNewWaysToExploreText()
     {
         this.waitForElementPresent(
@@ -33,6 +38,8 @@ abstract public class WelcomePageObject extends MainPageObject
                 "Cannot find 'New ways to explore'",
                 10);
     }
+
+    @Step("Waiting for 'Add or edit preferred languages'")
     public void waitForAddOrEditPreferredLanguagesText()
     {
         this.waitForElementPresent(
@@ -40,6 +47,8 @@ abstract public class WelcomePageObject extends MainPageObject
                 "Cannot find 'Add or edit preferred languages'",
                 10);
     }
+
+    @Step("Waiting for 'Learn more about our privacy policy and terms of use' link")
     public void waitForLearnMoreAboutOurPrivacyPolicyLink()
     {
         this.waitForElementPresent(
@@ -48,6 +57,7 @@ abstract public class WelcomePageObject extends MainPageObject
                 15);
     }
 
+    @Step("Clicking 'Next' button")
     public void ClickNextButton()
     {
         this.waitForElementAndClick(
@@ -55,6 +65,8 @@ abstract public class WelcomePageObject extends MainPageObject
                 "Cannot find 'Next' button'",
                 10);
     }
+
+    @Step("Clicking 'Get started' button")
     public void ClickGetStartedButton()
     {
         this.waitForElementAndClick(
@@ -63,6 +75,7 @@ abstract public class WelcomePageObject extends MainPageObject
                 10);
     }
 
+    @Step("Clicking 'Skip' button")
     public void clickSkipButton()
     {
         this.waitForElementAndClick(
@@ -71,6 +84,7 @@ abstract public class WelcomePageObject extends MainPageObject
                 5);
     }
 
+    @Step("Waiting for main text on page")
     public void waitForPrimaryText(String expected_text) {
         String actual_text = waitForElementAndGetAttribute(
                 PRIMARY_TEXT_LOCATOR,
@@ -83,6 +97,7 @@ abstract public class WelcomePageObject extends MainPageObject
                 "Text: " + actual_text + " did not match expected text: " + expected_text);
     }
 
+    @Step("Swiping through welcome pages")
     public void swipeOnboardingLeft() {
         if (Platform.getInstance().isAndroid()) {
             this.swipeElementToLeft(PRIMARY_TEXT_LOCATOR, "Cannot swipe left");

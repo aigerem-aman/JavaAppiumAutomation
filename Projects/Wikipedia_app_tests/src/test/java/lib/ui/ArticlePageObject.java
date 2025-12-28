@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -33,6 +34,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         return TITLE_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
 
+    @Step("Waiting for title element")
     public WebElement waitForTitleElement(String subString) {
         String article_title_xpath = getArticleTitleElement(subString);
         return this.waitForElementPresent(
@@ -41,8 +43,10 @@ abstract public class ArticlePageObject extends MainPageObject {
                 15);
     }
 
+    @Step("Getting article title")
     public String getArticleTitle(String subString) {
         WebElement title_element = waitForTitleElement(subString);
+        screenshot(this.takeScreenshot("article_page"));
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
         } else if (Platform.getInstance().isIOS()) {
@@ -52,6 +56,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Swiping till footer can be seen")
     public void swipeToFooter() {
         if (Platform.getInstance().isAndroid()) {
             this.swipeUpToFindElement(
@@ -71,6 +76,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Adding article to a new list on Android")
     public void addArticleToNewListOnAndroid(String name_of_folder) {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
@@ -90,10 +96,11 @@ abstract public class ArticlePageObject extends MainPageObject {
 
         this.waitForElementAndClick(
                 CONFIRM_ADDING_LIST,
-                "Cannot find Add to list button",
+                "Cannot find button to confirm adding",
                 5);
     }
 
+    @Step("Adding article to an existing list on Android")
     public void addArticleToExistingListOnAndroid(String name_of_folder) {
         this.waitForElementAndClick(
                 SAVE_BUTTON,
@@ -113,6 +120,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 15);
     }
 
+    @Step("Adding article to a new list on iOS")
     public void addArticleToNewListOniOS(String article_title, String name_of_folder) {
         this.waitForElementAndClick(SAVE_BUTTON,
                 "Cannot find option to add article to reading list",
@@ -141,6 +149,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 5);
     }
 
+    @Step("Adding article to an existing list on iOS")
     public void addArticleToExistingListOniOS(String article_title, String name_of_folder) {
         this.waitForElementAndClick(SAVE_BUTTON,
                 "Cannot find option to add article to reading list",
@@ -160,7 +169,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 15);
     }
 
-    public void removeArticleFromSavedIfAlreadySaved() {
+    private void removeArticleFromSavedIfAlreadySaved() {
         if (this.isElementPresent(REMOVE_FROM_MY_LIST)) {
             this.waitForElementAndClick(
                     REMOVE_FROM_MY_LIST,
@@ -174,16 +183,16 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Adding article to Watchlist on Mobile Web")
     public void addArticleToWatchlist() {
         this.removeArticleFromSavedIfAlreadySaved();
         this.waitForElementAndClick(
                 SAVE_BUTTON,
-                "Cannot find option to add article to reading list",
+                "Cannot find option to add article to  Watchlist",
                 10);
         this.waitForElementPresent(
                 REMOVE_FROM_MY_LIST,
-                "The article wasn't added to reading list",
+                "The article wasn't added to Watchlist",
                 15);
     }
-
 }
