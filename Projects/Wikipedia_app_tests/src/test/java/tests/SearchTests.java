@@ -1,11 +1,12 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import java.util.List;
@@ -53,10 +54,10 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeInSearchLine("Java");
         int number_of_found_articles = searchPageObject.getAmountOfFoundArticles();
-        assertTrue(number_of_found_articles > 0);
+        Assert.assertTrue(number_of_found_articles > 0);
         searchPageObject.clickCancelSearch();
         int number_of_found_articles_after_cancel = searchPageObject.getAmountOfFoundArticles();
-        assertEquals(0, number_of_found_articles_after_cancel);
+        Assert.assertEquals(0, number_of_found_articles_after_cancel);
     }
     @Test
     public void testSearchResultsShouldContainSearchQuery() {
@@ -71,7 +72,7 @@ public class SearchTests extends CoreTestCase {
 
         for (WebElement element : results) {
             String title = element.getAttribute("text");
-            assertTrue(
+            Assert.assertTrue(
                     "Text '" + title + "' does not contain 'Java'",
                     title.toLowerCase().contains("java")
             );
@@ -89,7 +90,7 @@ public class SearchTests extends CoreTestCase {
 
         int amount_of_articles_found = searchPageObject.getAmountOfFoundArticles();
 
-        assertTrue(amount_of_articles_found > 0);
+        Assert.assertTrue(amount_of_articles_found > 0);
     }
     @Test
     public void testNoResultsWhenQueryIsNotCorrect() {

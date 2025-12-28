@@ -1,6 +1,6 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.Factories.ArticlePageObjectFactory;
@@ -8,6 +8,7 @@ import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +29,7 @@ public class ChangeAppConditionTests extends CoreTestCase {
             this.rotateScreenLandscape();
             String article_title_after_rotation = articlePageObject.getArticleTitle("Java (programming language)");
 
-            assertEquals(
+            Assert.assertEquals(
                     "The title of the article is not the same after rotation",
                     article_title_before_rotation,
                     article_title_after_rotation);

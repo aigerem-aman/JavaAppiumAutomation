@@ -1,12 +1,15 @@
 package tests;
 
-import lib.CoreTestCase;
+import test.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
 import lib.ui.Factories.ArticlePageObjectFactory;
 import lib.ui.Factories.NavigationUIFactory;
 import lib.ui.Factories.SavedPageObjectFactory;
 import lib.ui.Factories.SearchPageObjectFactory;
+import lib.ui.NavigationUI;
+import lib.ui.SavedPageObject;
+import lib.ui.SearchPageObject;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -74,7 +77,6 @@ public class SavedTests extends CoreTestCase {
                 driver.navigate().refresh();
             }
     }
-
 
     @Test
     public void testOnlyDeletedArticleGetsDeleted() {
@@ -151,6 +153,4 @@ public class SavedTests extends CoreTestCase {
 
         savedPageObject.waitForArticleToAppearByTitle(search_query2);
     }
-
-
 }
